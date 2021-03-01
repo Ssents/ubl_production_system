@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css_static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'production/css/material_form.css' %}">
+{% endblock  %}
+
+
+{% block title %}Material form{% endblock  %}
+  
+
+
+{% block content %}
+  <div class="row ">
+    <div class=" col-12 py-2 ">
+        <div class="shadow p-3 mb-5 bg-white rounded machine-title">
+            <div class="row">
+                <h5 class="card-title col-6">{{machine.machine_name}} {{machine.machine_number}}</h5>
+                <h5 class="card-title col-6">{{machine.machine_serial_number}}</h5>
+                <!-- <p class="card-text">Arnold </p> -->
+            </div>
+            <div class="row">
+                <h5 class="card-title col-6">{{order.order_number}}</h5>
+                <h5 class="card-title col-6">{{order.order_colour}} {{order.order_finish}} G{{order.order_gauge}} {{order.order_width}}</h5>
+                <!-- <p class="card-text">Arnold </p> -->
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="shadow p-3 mb-5 bg-white rounded">
+    <header><h4>Available Material</h4></header>
+    <table class="table fade show">
+      <thead class="titles">
+        <tr>
+          <th scope="col">Coil Number</th>
+          <th scope="col">Recorded mass</th>
+          <th scope="col">Options</th>
+        </tr>
+      </thead>
+ 
+        
+      <tbody>
+              
+      {% for material in material_list %}
+        <tr id="{{material.id}}">
+          <td > 
+            {{material.coil_number}}
+          </td>
+          <td >{{material.final_mass}}</td>
+          <td class="options row">
+            <div class="col-md-6 py-1 add-new">
+                <button type="button" class="btn col-md-12 " >
+                  Utilise
+                </button>
+            </div>
+          </td>		      
+        </tr>        
+      {% endfor %}
+
+      </tbody>
+    </table>
+  </div>
+
+
+    <form action="" id="material-form" class="row g-3 shadow p-3 mb-5 bg-white rounded order-form">
+      <div class="py-3">
+        <h3>Create Material</h3>
+      </div>
+      <!-- "{% url 'production:create-material-ajax' %}" -->
+      {% csrf_token %}
+      <input type="hidden" class="form-control" id="order-id" name="order_id" value="{{order_id}}">
+
+      <div class="form-group row">
+        <label for="inputEmail3" class="col-sm-2 col-form-label">Coil Number</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="coil-number" name="coil_number">
+        </div>
+      </div>
+      
+      <div class="form-group row">
+        <label for="inputPassword3" class="col-sm-2 col-form-label">Initial Mass</label>
+        <div class="col-sm-10">
+          <input type="number" class="form-control" id="initial-mass" 
+            name="initial_mass">
+        </div>
+      </div>
+      
+      <div class="form-group row">
+        <label for="inputPassword3" class="col-sm-2 col-form-label">Final Mass</label>
+        <div class="col-sm-10">
+          <input type="number" class="form-control" id="final-mass" name="final_mass">
+        </div>
+      </div>
+
+
+      <div class="form-row col-md-12 p-2">
+        <div class="col-md-6 py-1 add-new">
+          <a href ="{% url 'production:edit-order-page' order_id %}">
+            <button type="button" class="btn col-md-12 " 
+              data-toggle="button" aria-pressed="false" 
+              id="submit-order">
+              Back to order
+            </button>
+          </a>
+        </div>
+
+        <div class="col-md-6 py-1 add-new">
+          <button type="submit" class="btn col-md-12" 
+            data-toggle="button" aria-pressed="false" 
+            id="submit-order">
+            Save and Continue
+          </button>
+        </div>
+      </div>
+
+    </form>
+
+
+    <table class="table fade show" id="material-table">
+      <thead class="titles">
+        <tr>
+          <th scope="col">Coil Number</th>
+          <th scope="col">Initial mass</th>
+          <th scope="col">Final mass</th>
+          <th scope="col">Options</th>
+        </tr>
+      </thead>
+ 
+        
+      <tbody>
+              
+      {% for material in material %}
+        <tr id="{{material.id}}">
+          <td name="coil_number" class="editMaterial"
+            data-bs-toggle="modal" data-bs-target="#editMaterialForm"> 
+            <span class="coilNumber" >{{material.coil_number}}</span>
+            <i class="fas fa-edit"></i>
+          </td>
+          <td name="initial_mass" class="initialMass">{{material.initial_mass}}</td>
+          <td name="final_mass" class="finalMass">{{material.final_mass}}</td>
+          <td class="options row">
+            <button type="button" class="btn btn-primary col-md-6
+              toPieces"><a href="{% url 'production:pieces-template' machine_id order_id material.id %}">
+                Pieces
+              </a></button>
+            <button type="button" class="btn btn-danger deleteMaterial col-md-6" 
+              data-bs-toggle="modal" data-bs-target="#deleteMaterialForm">
+                Delete
+            </button>
+          </td>		      
+        </tr>        
+      {% endfor %}
+
+      </tbody>
+    </table>
+
+
+    <!-- Modal Edit Alert-->
+    <div class="modal fade" id="editMaterialForm" data-bs-backdrop="static" 
+        data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" 
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content modal-edit-pieces">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">
+                        Edit Material
+                    </h5>
+                    <button type="button" class="btn-close" 
+                        data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="editMaterialFormContent row g-3">
+                      <div class="col-md-12">
+                          <label for="inputCoilNumber" class="form-label">Coil Number</label>
+                          <input type="text" class="form-control" 
+                            id="inputCoilNumber">
+                      </div>
+        
+                      <div class="col-lg-12">
+                        <label for="inputInitialMass" class="form-label">Initial Mass</label>
+                        <input type="number" class="form-control" id="inputInitialMass">
+                      </div>
+        
+                      <div class="col-md-12">
+                        <label for="inputFinalMass" class="form-label">Final Mass</label>
+                        <input type="number" class="form-control" id="inputFinalMass">
+                      </div>
+        
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary bg-danger" 
+                          data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary"
+                          id="confirmEditMaterial">Save</button>
+                      </div>
+                    </form>
+              </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Delete Alert-->
+    <div class="modal fade" id="deleteMaterialForm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Delete Coil</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" 
+              aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="alert-question">
+              Are you sure you want to delete Coil <span  id="modalCoilNumber"></span>?
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary bg-danger" 
+              data-bs-dismiss="modal">
+              No
+            </button>
+            <button type="button" class="btn btn-primary " id="deleteMaterialConfirm">
+              Yes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+{% endblock  %}
+
+
+{% block javascript_block %}
+  <script type="text/javascript" src="{% static 'production/js/material_page.js' %}"></script> 
+{% endblock  %}

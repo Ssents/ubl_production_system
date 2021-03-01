@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+	{% block title %}
+		Production form
+	{% endblock  %}
+		
+	{% block css_static %}
+		<link rel="stylesheet" type="text/css" 
+			href="{% static 'production/css/grid.css' %}">
+		<link rel="stylesheet" type="text/css" 
+			href="{% static 'production/css/form_with_controls.css' %}">
+	{% endblock  %}
+
+
+	{% block content%}
+    <!-- Machine name  -->
+    <div class="card text-center col-md-12" id="header-card">
+        <div class="card-header">
+            {{ machinery.machine_name }}-{{machinery.machine_number}}
+        </div>
+        <div class="row">
+        <div class="card-body secondary col-md-4">
+          <h5 class="card-title">Machine details</h5>
+		  <p class="card-text">Machine id - <span id="machine-id" 
+			name="machine_id">{{machinery.id}}</span></p>
+        </div>
+        <div class="card-body secondary col-md-4">
+          <h5 class="card-title">Operator details</h5>
+          <p class="card-text">Operator - {{user.first_name}} {{user.last_name}}</p>
+		</div>
+		
+		<div class="card secondary text-white bg-primary mb-2 col-md-4 mt-2" >
+			<div class="card-header">Production unique slug</div>
+			<div class="card-body">
+			  <h5 class="card-title" id="order-slug">Please enter order</h5>
+			</div>
+		</div>
+        <!-- <div class="card-body secondary col-md-4">
+          <h5 class="card-title">Special title treatment</h5>
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div> -->
+  
+      </div>
+        <div class="card-footer text-muted">
+            2 days ago
+          </div>
+    </div>
+		<!-- Item -->
+		<div class="grid">
+		<!-- Item -->
+			<div class="item">
+				
+				<h2>Production details</h2>
+			<form action="{{'create-order/'}}" method='POST'>
+			
+					<!-- Operator and machine details -->
+					{% csrf_token %}
+				<div class="form-row col-md-12">
+					<div class="col-md-6 mb-3">
+						<label for="productionTypeValidation">Production type</label>
+						<select class="custom-select" name="production_type" 
+							id="productionTypeValidation" required>
+								<option value="">Stock type</option>
+								{% for key,value in production_type %}
+									<option value="{{key}}">{{value}}</option>								
+								{% endfor %}
+						</select>
+					</div>
+					
+					<div class="col-md-6 mb-3">
+						<label for="productionBondValidation">Production type</label>
+						<select class="custom-select" name="production_bond" 
+							id="productionBondValidation" required>
+								<option value="">Bond</option>
+								{% for key,value in bond %}
+									<option value="{{key}}">{{value}}</option>								
+								{% endfor %}
+						</select>
+					</div>
+					<div class="col-md-6 mb-3">
+						<label for="orderNumberValidation">Order number</label>
+						<input type="text" name="order_number" class="form-control is-valid" 
+						id="orderNumberValidation" value="" required>
+					</div>
+				</div>
+
+				<div class="form-row col-md-12">
+					<div class="col-md-6 mb-3">
+						<label for="profileValdation">Profile</label>
+						<select class="custom-select" name="profile" 
+							id="profileValdation" required>
+							<option value="">profile</option>
+
+							{% for key,value in profile %}
+								<option value="{{key}}">{{value}}</option>								
+							{% endfor %}
+						</select>
+					</div>
+
+					<div class="col-md-6 mb-3">
+						<label for="coilColourValidation" name="order_gauge">ColoUr</label>
+						<select class="custom-select" name="order_colour"
+						id= "coilColourValidation" required>
+							<option value="">Colour</option>
+							{% for key,value in colours %}
+								<option value="{{ key }}">{{value}}</option>								
+							{% endfor %}
+						</select>
+					</div>
+
+					<div class="col-md-4 mb-3">
+						<label for="finishValdation" name="order_gauge">Finish</label>
+						<select class="custom-select" name="order_finish"
+							id="finishValdation" required>
+							<option value="">Choose...</option>
+							{% for key,value in finish %}
+								<option value="{{key}}">{{value}}</option>								
+							{% endfor %}
+						</select>
+					</div>
+
+					<div class="col-md-4 mb-3">
+						<label for="gaugeValidation" name="order_gauge">Gauge</label>
+						<select class="custom-select d-block w-100" name="order_gauge"
+						id="gaugeValidation" required>
+							<option value="">Gauge</option>
+							{% for key,value in gauge %}
+								<option value="{{key}}">{{value}}</option>								
+							{% endfor %}
+						</select>
+					</div>
+
+					<div class="col-md-4 mb-3">
+						<label for="widthValidation" name="order_width">Width</label>
+						<select class="custom-select d-block w-100" name="order_width"
+						id="widthValidation" required>
+							<option value="">width</option>
+							{% for key,value in width %}
+								<option value="{{ key }}">{{value}}</option>								
+							{% endfor %}
+						</select>
+					</div>
+					<br />
+
+					<div class="form-row col-md-12">
+						<button type="submit" class="btn btn-success col-lg-6 add-new" 
+							data-toggle="button" aria-pressed="false" 
+							id="submit-order">
+							Back to dashboard
+						</button>
+						<button type="submit" class="btn btn-success col-lg-6 add-new" 
+							data-toggle="button" aria-pressed="false" 
+							id="submit-order">
+							Save and Continue
+						</button>
+					</div>
+			
+				</div>
+			</form>
+		</div>
+	</div>
+{% endblock %}
+
+
+
+{% block javascript_block %}
+	<script type="text/javascript" src="{% static 'production/js/production_form.js' %}"></script>
+{% endblock  %}
+	

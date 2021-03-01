@@ -1,0 +1,216 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block css_static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'production/css/order_form.css' %}">
+{% endblock  %}
+
+
+{% block title %}Edit Order{% endblock  %}
+
+
+
+    
+{% block content %}
+        
+    <!-- main -->
+      <div class="row ">
+          <div class=" col-12 py-2 ">
+              <div class="shadow p-3 mb-5 bg-white rounded machine-title">
+                  <div class="row">
+                      <h5 class="card-title col-6">
+                        {{machine.machine_name}} {{machine.machine_number}}
+                      </h5>
+                      <h5 class="card-title col-6">UBL 00046D</h5>
+                      <!-- <p class="card-text">Arnold </p> -->
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      	<div class="order-section">
+			<form action="{% url 'production:edit-order' %}" method='POST' class="shadow p-3 mb-5 bg-white rounded">
+				
+				<div class="form-header py-3">
+					<h3>Edit order</h3>
+				</div>  
+				<!-- Operator and machine details -->
+        {% csrf_token %}
+        
+        <input type="hidden" name="order_id" class="form-control is-valid" 
+            id="order-id" value="{{order.id}}">
+
+				<div class="form-row col-md-12">
+					<div class="col-md-6 mb-3">
+						<label for="productionTypeValidation">Production type</label>
+						<select class="custom-select" name="production_type" 
+							id="productionTypeValidation" required>
+              {% for key,value in production_type %}
+                {% if order.production_type == value %}
+                  <option value="{{key}}" selected>{{value}}</option>								
+                {% else %}
+                  <option value="{{key}}">{{value}}</option>								
+                {% endif %}								
+              {% endfor %}
+						</select>
+					</div>
+					
+					<div class="col-md-6 mb-3">
+						<label for="productionBondValidation">Production bond</label>
+						<select class="custom-select" name="production_bond" 
+							id="productionBondValidation" required>
+								<option value="">Bond</option>
+								{% for key,value in bond %}
+                  {% if order.production_bond == value %}
+                    <option value="{{key}}" selected>{{value}}</option>								
+                  {% else %}
+                    <option value="{{key}}">{{value}}</option>								
+                  {% endif %}									
+                {% endfor %}
+						</select>
+					</div>
+				</div>
+					
+				<div class="form-row col-md-12">
+
+					<div class="col-md-3 mb-3">
+						<label for="orderNumberValidation">Order number</label>
+						<input type="text" name="order_number" class="form-control" 
+							id="orderNumberValidation" value="{{order.order_number}}" required>
+					</div>
+
+					<div class="col-md-3 mb-3">
+						<label for="workOrderNumberValidation">Work order number</label>
+						<input type="text" name="work_order_number" class="form-control" 
+							id="workOrderNumberValidation" value="{{order.work_order_number}}" required>
+					</div>
+
+					<div class="col-md-6 mb-3">
+						<label for="profileValdation">Order Complete</label>
+						<select class="custom-select" name="order_completed" 
+							id="profileValdation" required>
+								<option value="">order status</option>
+                {% if order.order_completed %}
+                  <option value="True" selected>Completed</option>								
+                  <option value="False">Incomplete</option>							
+                {% else %}
+                  <option value="True">Completed</option>								
+                  <option value="False" selected>Incomplete</option>								
+                {% endif %}								
+						</select>
+					</div>
+					
+				</div>        
+
+				<div class="form-row col-md-12">
+					<div class="col-md-6 mb-3">
+						<label for="profileValdation">Profile</label>
+						<select class="custom-select" name="profile" 
+							id="profileValdation" required>
+							<option value="">profile</option>
+              {% for key,value in profile %}
+                {% if order.profile == value %}
+                  <option value="{{key}}" selected>{{value}}</option>								
+                {% else %}
+                  <option value="{{key}}">{{value}}</option>								
+                {% endif %}								
+              {% endfor %}
+						</select>
+					</div>
+					
+					<div class="col-md-3 mb-3">
+						<label for="gaugeValidation" name="order_gauge">Gauge</label>
+						<select class="custom-select d-block w-100" name="order_gauge"
+						id="gaugeValidation" required>
+							<option value="">gauge</option>
+              {% for key,value in gauge %}
+                {% if order.order_gauge == value %}
+                  <option value="{{key}}" selected>{{value}}</option>								
+                {% else %}
+                  <option value="{{key}}">{{value}}</option>								
+                {% endif %}								
+              {% endfor %}
+						</select>
+					</div>
+
+					<div class="col-md-3 mb-3">
+						<label for="widthValidation" name="order_width">Width</label>
+						<select class="custom-select d-block w-100" name="order_width"
+						id="widthValidation" required>
+							<option value="">width</option>
+              {% for key,value in width %}
+                {% if order.order_width == value %}
+                  <option value="{{key}}" selected>{{value}}</option>								
+                {% else %}
+                  <option value="{{key}}">{{value}}</option>								
+                {% endif %}								
+              {% endfor %}
+						</select>
+					</div>
+
+					<div class="col-md-6 mb-3">
+						<label for="coilColourValidation" name="order_gauge">Colour</label>
+						<select class="custom-select" name="order_colour"
+						id= "coilColourValidation" required>
+							<option value="">colour</option>
+              {% for key,value in colours %}
+                {% if order.order_colour == value %}
+                  <option value="{{key}}" selected>{{value}}</option>								
+                {% else %}
+                  <option value="{{key}}">{{value}}</option>								
+                {% endif %}								
+            {% endfor %}
+						</select>
+					</div>
+
+					<div class="col-md-6 mb-3">
+						<label for="finishValdation" name="order_gauge">Finish</label>
+						<select class="custom-select" name="order_finish"
+							id="finishValdation" required>
+							<option value="">finish</option>
+              {% for key,value in finish %}
+                {% if order.order_finish == value %}
+                  <option value="{{key}}" selected>{{value}}</option>								
+                {% else %}
+                  <option value="{{key}}">{{value}}</option>								
+                {% endif %}								
+            {% endfor %}
+						</select>
+					</div>
+
+
+
+					<div class="form-row col-md-12 p-2">
+						<div class="col-md-6 py-1 add-new">
+							<a href ="{% url 'maintenance:dashboard' machine.id %}">
+								<button type="button" class="btn col-md-12 " 
+									data-toggle="button" aria-pressed="false" 
+									id="submit-order">
+									Don't save 
+								</button>
+							</a>
+						</div>
+
+						<div class="col-md-6 py-1 add-new">
+							<button type="submit" class="btn col-md-12" 
+								data-toggle="button" aria-pressed="false" 
+								id="submit-order">
+								Save changes
+							</button>
+						</div>
+					</div>
+				
+				</div>
+			</form>
+        </div>
+
+
+{% endblock  %}
+
+
+
+{% block javascript_block %}
+  <script type="text/javascript" src="{% static 'production/js/order_form.js' %}"></script>
+{% endblock  %}

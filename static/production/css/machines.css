@@ -1,0 +1,21 @@
+body {
+	background-color: rgba(15,50,84,1);
+
+
+}
+
+
+.grid {
+	max-width: 95%;
+	display: grid;
+	grid-template-columns: repeat(auto-fit,minmax(250px, 1fr));
+
+	grid-gap: 0.5%;
+
+}
+.card{
+    bottom-margin: 10px;
+    display: flex;
+ 	align-items: center;
+}
+

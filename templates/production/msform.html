@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block css_static %}
+    <link rel="stylesheet" href="{% static 'production/css/msform.css' %}">
+{% endblock  %}
+    
+
+{% block title %} Prodcution form {% endblock %}
+        
+
+
+
+
+
+{% block content %}
+       
+    <form id="Form1" action="{% url 'create-order' %}">
+        <h3>PRODUCTION ORDER DETAILS</h3>
+
+        <div class="form-group">
+            <label for="production-category">Production catergory</label>
+            <select class="custom-select d-block w-100" id="production-category" required>
+                <option value="">category</option>
+                {% for key,value in production_type %}
+                    <option value="{{key}}">{{value}}</option>								
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="material">Material</label>
+            <select class="custom-select d-block w-100" id="material" required>
+                <option value="">material</option>
+                {% for key,value in bond %}
+                    <option value="{{key}}">{{value}}</option>								
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+        <label for="order-number">Order number</label>
+        <input type="number" class="form-control" id="order-number">
+        </div>
+        <div class="form-group">
+            <label for="profile">Profile</label>
+            <select class="custom-select d-block w-100" id="profile" required>
+                <option value="">profile</option>
+                {% for key,value in profile %}
+                    <option value="{{key}}">{{value}}</option>								
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="colour">Colour</label>
+                <select class="custom-select d-block w-100" id="colour" required>
+                    <option value="">colour</option>
+                    {% for key,value in colours %}
+                        <option value="{{key}}">{{value}}</option>								
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="finish">Finish</label>
+                <select class="custom-select d-block w-100" id="finish" required>
+                    <option value="">finish</option>
+                    {% for key,value in finish %}
+                        <option value="{{key}}">{{value}}</option>								
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="gauge">Gauge</label>
+                <select class="custom-select d-block w-100" id="gauge" required>
+                    <option value="">gauge</option>
+                    {% for key,value in gauge %}
+                        <option value="{{key}}">{{value}}</option>								
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="width">Width</label>
+                <select class="custom-select d-block w-100" id="width" required>
+                    <option value="">width</option>
+                    {% for key,value in width %}
+                        <option value="{{key}}">{{value}}</option>								
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary col-lg-12" id="Next1">Next</button>
+    </form>
+
+{% endblock  %}
+
+    
+
+
+{% block javascript_block %}
+{% endblock  %}

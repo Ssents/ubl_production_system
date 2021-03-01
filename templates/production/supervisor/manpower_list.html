@@ -1,0 +1,285 @@
+{% extends 'with_sidebar.html' %}
+{% load static %}
+
+
+{% block title %}
+    Manpower Create
+{% endblock  %}
+
+
+
+{% block css_static %}
+    <link rel="stylesheet" href="{% static 'main/css/buttons.css' %}">    
+    <link rel="stylesheet" href="{% static 'main/css/tables.css' %}">    
+    <link rel="stylesheet" href="{% static 'production/css/manpower_list.css' %}">    
+
+{% endblock %}
+
+
+{% block content %}
+           
+    <header  class="py-5 row">
+        <div class="col-md-8">
+            <h3>Manpower Planner</h3>
+        </div>
+        <div class="col-md-3">
+            <form class="d-flex" method="POST" action="{% url 'production:manpower_search' %}">
+                {% csrf_token %}
+                <input class="form-control me-2" type="date" value={{date}} 
+                    placeholder="Search" aria-label="Search" name="production_date" required>
+                <button class="btn btn-primary searchBtn" type="submit">Search</button>
+            </form>
+        </div>
+    </header>
+    <div class="row py-3">
+        <div class="col-md-9">
+            <h3>Date: {{date}}</h3>
+        </div>
+        <div class="col-md-3">
+            <button type="button" class="btn btn-primary col-md-5 edit editPlan"
+                data-bs-toggle="modal" data-bs-target="#createManpowerPlanForm"
+                >
+                Add Plan
+            </button>
+        </div>
+    </div>
+    {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>{{message}}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" 
+                aria-label="Close"></button>
+        </div>
+    {% endfor %}
+
+
+
+    {% if manpower_list %}
+ 
+
+        <div class="item ">
+            <div class="card shadow p-3 mb-1 bg-white rounded plan-card">
+                <table class="table py-5 mobile-optimised plan-table">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="Major">Machine</th>
+                            <th scope="col" class="minor">Date</th>
+                            <th scope="col" class="minor">Shift</th>
+                            <th scope="col" class="minor">Operator</th>
+                            <th scope="col" class="minor">Helpers</th>
+                            <th scope="col" class="minor">Options</th>
+                        </tr>
+                        
+                    </thead>
+
+                    <tbody>
+                        
+                        {% for plan in manpower_list %}
+                            <tr id="{{ plan.id }}">
+                                <td class="type major machineName" data-th="Machine">{{plan.machine}}</td>
+                                <td class="type major machineId" data-th="Machine" hidden>{{plan.machine.id}}</td>
+                                <td class="minor" data-th="Date: ">{{plan.date}}</td>
+                                <td class="minor shift" data-th="Shift: ">{{plan.shift}}</td>
+                                <td class="minor operator" data-th="Operator: ">{{plan.operator}}</td>
+                                <td class="minor helpers" data-th="Helpers: ">{{plan.helpers}}</td>
+                            
+                                <td class="minor" data-th="Options:" class="row">
+                                    <button type="button" class="btn btn-primary col-md-5 edit editPlan"
+                                        data-bs-toggle="modal" data-bs-target="#editManpowerPlanForm">
+                                        Edit
+                                    </button>
+                                    <button type="button" class="btn btn-danger col-md-6 delete deletePlan"
+                                        data-bs-toggle="modal" data-bs-target="#deleteManpowerPlanForm">
+                                        Delete
+                                    </button> 
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+    {% endif %}
+
+
+    <div class="modal fade createModalForm" id="createManpowerPlanForm" data-bs-backdrop="static" 
+        data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" 
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content modal-edit-pieces">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">
+                        Create Plan
+                    </h5>
+                    <button type="button" class="btn-close" 
+                        data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                    <form class="row g-3" action="{% url 'production:manpower_create' %}" 
+                    method="POST">
+                    <div class="modal-body">
+                        {% csrf_token %}
+                        <div class="col-md-12">
+                            <label for="inputMachine" class="form-label">Machine</label>
+                            <select id="inputMachine" class="form-select" 
+                                name="machine_id" required>
+                                <option selected value="">Choose...</option>
+                                {% for machine in machines %}
+                                    <option value="{{machine.id}}">{{machine}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="row col-md-12 py-1">
+                            <div class="col-6">
+                                <label for="inputDay" class="form-label">Day</label>
+                                <select id="inputDay" class="form-select" 
+                                    name="day" required>
+                                    <option selected value="">Choose...</option>
+                                    {% for day in days %}
+                                        <option value="{{day}}">{{day}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <label for="inputMonth" class="form-label">Month</label>
+                                <select id="inputMonth" class="form-select" 
+                                    name="month" required>
+                                    <option selected value="">Choose...</option>
+                                    {% for key, value in months %}
+                                        <option value="{{key}}">{{value}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="inputShift" class="form-label">Shift</label>
+                            <select id="inputShift" class="form-select" 
+                                name="shift" required>
+                                <option selected value="">Choose...</option>
+                                {% for key,value in shifts %}
+                                    <option value="{{key}}">{{value}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="inputOperator" class="form-label">Operator</label>
+                            <input type="text" class="form-control" id="inputOperator"
+                                name="operator" required>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="inputHelpers" class="form-label">Helpers</label>
+                            <input type="number" class="form-control" id="inputHelpers"
+                                name="helpers" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary bg-danger" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade editModalForm" id="editManpowerPlanForm" data-bs-backdrop="static" 
+        data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" 
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content modal-edit-pieces">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">
+                        Edit Plan
+                    </h5>
+                    <button type="button" class="btn-close" 
+                        data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                    <form class="row g-3" action="{% url 'production:manpower_edit' %}" 
+                    method="POST">
+                    <div class="modal-body">
+                        {% csrf_token %}
+                        <div class="col-md-12" hidden>
+                            <label for="inputPlanId" class="form-label">Id</label>
+                            <input type="number" class="form-control" id="inputPlanId"
+                                name="plan_id" value="0" required>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="inputMachineEdit" class="form-label">Machine</label>
+                            <select id="inputMachineEdit" class="form-select" 
+                                name="machine_id" required>
+                                <option selected value="">Choose...</option>
+                                {% for machine in machines %}
+                                    <option value="{{machine.id}}">{{machine}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="inputShiftEdit" class="form-label">Shift</label>
+                            <select id="inputShiftEdit" class="form-select" 
+                                name="shift" required>
+                                <option selected value="">Choose...</option>
+                                {% for key,value in shifts %}
+                                    <option value="{{key}}">{{value}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="inputOperatorEdit" class="form-label">Operator</label>
+                            <input type="text" class="form-control" id="inputOperatorEdit"
+                                name="operator" required>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="inputHelpersEdit" class="form-label">Helpers</label>
+                            <input type="number" class="form-control" id="inputHelpersEdit"
+                                name="helpers" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary bg-danger" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- Modal Delete Alert-->
+    <div class="modal fade deleteModalForm" id="deleteManpowerPlanForm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{% url 'production:manpower_delete' %}" method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Delete Plan</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" 
+                            aria-label="Close"></button>
+                    </div>
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <input type="text" class="form-control" 
+                        id="inputPlanIdDelete" name="plan_id" hidden>
+                        Are you sure you want to Delete the plan?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" 
+                            data-bs-dismiss="modal">No</button>
+                        <button type="submit" class="btn btn-primary">Yes</button>
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+        
+{% endblock  %}
+    
+  
+{% block javascript_block %}
+<script type="text/javascript" src="{% static 'production/js/manpower_list.js' %}"></script>
+{% endblock  %}
+    
+    

@@ -1,0 +1,16 @@
+:root {
+    --ubl-blue: rgba(15,50,84,1);
+    --ubl-orange: rgba(255, 20, 0, 0.8);
+    --ubl-white: rgba(255, 255, 255, 1);
+
+    --ubl-excellent: rgba(37, 184, 17, 0.986);
+    --ubl-fair: rgba(255,163,0,0.8);
+    --ubl-poor: rgb(221, 17, 17);
+
+    --ubl-black: rgb(0, 0, 0, 1);
+
+}
+
+.plan-card {
+    border: solid 2px var(--ubl-blue);
+}

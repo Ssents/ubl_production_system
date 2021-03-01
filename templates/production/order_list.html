@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css_static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'production/css/order_list.css' %}">
+{% endblock  %}
+
+
+{% block title %}Order list{% endblock  %}
+
+
+{% block content %}
+        
+    <header  class="py-5">
+        <h3>Standard material</h3>
+    </header>
+
+    <div class="wrapper ">
+        <div id="tableView" class="main-table  py-4">
+            <table class="table mobile-optimised shadow p-3 mb-5 bg-white rounded material-table">
+                <thead>
+                  <tr >
+                    <th scope="col" class="major">Profile</th>
+                    <th scope="col" class="minor">Details</th>
+                    <th scope="col" class="minor">Type</th>
+                    <th scope="col" class="minor">Production</th>
+                    <th scope="col" class="minor">Transferred</th>
+                    <th scope="col" class="minor">Total Production</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for material in material_list %}
+                        <tr class="main-table-row complete row-body">
+                            <td class="major"  data-th="Profile">
+                                <a href="{% url 'production:list-orders'  material.order__profile material.order__order_number material.order__order_gauge material.order__order_colour material.order__order_finish %}">
+                                    <span class="title">{{material.order__profile}}</span> 
+                                    <span class="icon" id="detailsId"><i class="fas fa-chevron-circle-down"></i></span>
+                                </a>
+                            </td>
+        
+                            <td class="major" data-th="Details:">
+                                G{{material.order__order_gauge}} {{material.order__order_colour}} 
+                                {{material.order__order_finish}} {{material.order__order_width}}
+                            </td>
+
+                            <td class="minor"  data-th="Type:">{{material.order__order_number}} </td>
+        
+                            <td class="minor" data-th="Production:">{{material.pieces}}</td>
+        
+                            <td class="minor" data-th="Transferred:">681</td>
+                            <td class="minor" data-th="Total:">1181</td>
+                        </tr>                      
+                    {% endfor %} 
+                </tbody>
+            </table>
+        </div>
+    </div> 
+        
+{% endblock  %}
+    
+  

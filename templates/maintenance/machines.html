@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block css_static %}
+    <link rel="stylesheet" type="text/css" 
+        href="{% static 'maintenance/css/machines.css' %}">
+{% endblock  %}
+    
+
+{% block title %}Machines{% endblock  %}
+
+
+
+    
+{% block content %}
+    <div class="container py-5">
+
+        <div class="grid"> 
+            
+            {% if machines %}
+                
+                {% for machine in machines %}
+                    <div class="item ">
+                        <div class="card card-item shadow p-3 mb-5 bg-white rounded">
+                            <img src="{{ machine.machine_photo.url }}" 
+                                class="card-img-top" alt="{{machine.machine_name}} 
+                                {{machine.machine_number}}">
+                            <div class="card-body">
+                                <a class="card-link" href="{% url 'maintenance:dashboard' machine.id %}">
+                                    <h5 class="card-title">{{machine.machine_name}} 
+                                        {{machine.machine_number}}
+                                    </h5>
+                                </a>
+                                <!-- <p class="card-text">
+                                    Some quick example text to build on the card title and make 
+                                    up the bulk of the card's content.
+                                </p> -->
+                            </div>
+                        </div>
+                    </div>                     
+                {% endfor %}
+                    
+               
+            {% endif %}
+        </div>
+
+
+        
+        <div class="paginator row md-4">
+            <div class="col-md-12">
+                
+                {% if machines.has_other_pages %}
+                        
+                    <ul class="pagination pull-right">
+                        
+                        {% if machines.has_previous %}
+                            <li class="page-item">
+                                <a href="?page={{machines.previous_page_number}}" 
+                                    class="page-link">&laquo;</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link">&laquo;</a>
+                            </li>
+                        {% endif %}
+
+                        
+                        {% for i in machines.paginator.page_range %}  
+                        
+                        {% if machines.number == i %}
+                            <li class="page-item active">
+                                <a class="page-link"> {{i}}</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a href="?page={{i}}" class="page-link">{{i}}</a>
+                            </li>
+                        {% endif %} 
+                            
+                        {% endfor %}
+                        
+                        
+                        {% if machines.has_next %}
+                            <li class="page-item">
+                                <a href="?page={{machines.next_page_number}}" 
+                                class="page-link">&raquo;</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link">&raquo;</a>
+                            </li>
+                        {% endif %}
+                            
+                    </ul>
+
+                {% endif %}
+                
+            </div>
+        </div>
+
+    </div>
+        
+{% endblock  %}
+        

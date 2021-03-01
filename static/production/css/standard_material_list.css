@@ -1,0 +1,92 @@
+:root {
+  --ubl-blue: rgba(15,50,84,1);
+  --ubl-orange: rgba(255, 20, 0, 1);
+  --ubl-white: rgba(255, 255, 255, 1); 
+  --ubl-black: rgba(0,0,0,1);
+}
+
+table td a {
+  text-decoration: none !important;
+  /* color: var(--ubl-black); */
+}
+
+table tbody span {
+  color: var(--ubl-black);
+}
+
+table thead{
+  background-color: var(--ubl-blue);
+  color: var(--ubl-white);
+}
+
+table tbody tr:hover{
+  background-color: rgba(15,50,84,0.3);
+}
+
+@media only screen and (max-width:450px){
+  .mobile-optimised {
+      word-wrap: break-word;
+      font-size: 1em;
+      border:none;
+
+  }
+
+  table thead{
+      display: none;
+  }
+  
+  table tbody tr {
+      margin: 5em;
+
+  }
+
+  table tbody td {
+      display: block;
+      float:left;
+      clear: both;
+      box-sizing: border-box;
+  }
+  
+  table tbody .major {
+      background-color: var(--ubl-blue);
+      width: 100%;
+      color: var(--ubl-white) !important;
+
+
+  }
+  table tbody .minor {
+      width: 95%;
+      margin-left: 10%;
+  }
+      
+  table td a {
+      text-decoration: none !important;
+      color: var(--ubl-white) !important;
+  }
+
+  .mobile-optimised {
+      overflow: hidden;
+
+  }
+
+  .mobile-optimised .minor:before, .mobile-optimised .minor {
+      display: inline;
+      float: left;
+      margin-left: 1.5em;
+    }
+
+  .mobile-optimised .minor:before {
+      content: attr(data-th);
+      display: block;
+      font-weight: bold;
+      margin:0 0.3em 0.3em 0;
+      color:var(--ubl-blue);
+    }
+
+  
+
+}
+
+.standard-navbar {
+    color: var(--ubl-black) !important; 
+}

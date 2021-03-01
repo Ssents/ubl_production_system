@@ -1,0 +1,78 @@
+body{
+	/*background-color: rgba(15,50,84,1);*/
+	color: rgba(255,255,255,1);
+
+}
+
+#imageField {
+	background-color: rgba(15,50,84,1);
+}
+
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat( auto-fit, minmax(250px, 1fr) );
+	grid-template-rows: 100vh;
+
+}
+
+#detailField {
+	/*background-color: rgba(255,178,0,1);*/
+	background-color: rgba(255,255,255,1);
+
+  	/*border-radius: 17% 0 0 17%;*/
+
+}
+
+h1 {
+	text-align: center;
+}
+
+#loginSection {
+	margin: auto;
+	width: 50%;
+	height: 90%;
+	margin-top: 5%;
+	background-color:  rgba(15,50,84,1);
+	display: flex;
+  	justify-content: center;
+  	/*border-radius: 7.7%;*/
+
+}
+
+
+form {
+	 margin: auto;
+}
+
+#safalImage{ 
+	display:flex;
+	height: 90%;
+	margin: auto;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: auto;
+  	justify-content: center;
+	height: 95vh;
+}
+
+#submit {
+  	display: flex;
+  	margin-left: auto;
+	margin-right: auto;
+}
+
+h1, label {
+	font-weight: bold;
+}
+
+ .custom-color {
+ 	background-color: rgba(15,50,84,1) !important;
+ 	border-bottom: solid;
+ 	color: rgba(255,255,255,1) !important;
+ }
+#main-footer {
+	background-color: rgba(15,50,84,1) !important;
+ 	border-top: solid;
+ 	color: rgba(255,255,255,1) !important;
+}

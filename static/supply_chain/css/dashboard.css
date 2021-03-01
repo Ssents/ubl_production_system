@@ -1,0 +1,172 @@
+:root {
+    --ubl-blue: rgba(15,50,84,1);
+    --ubl-orange: rgba(255, 20, 0, 0.8);
+    --ubl-white: rgba(255, 255, 255, 1);
+
+    --ubl-excellent: rgba(37, 184, 17, 0.986);
+    --ubl-fair: rgba(255,163,0,0.8);
+    --ubl-poor: rgb(221, 17, 17);
+
+    --ubl-black: rgb(0, 0, 0, 1);
+
+}
+
+#createCoilForm .modal-content{
+    border: solid 5px var(--ubl-black);
+    border-radius: 0.6em;
+}
+
+#createCoilForm .modal-header, #createCoilForm .modal-footer {
+    /* background-color: rgba(255,20,0,0.8); */
+    background-color: var(--ubl-black);
+    color: rgba(255, 255, 255, 1);    
+}
+
+#createCoilForm .btn-close{
+    background-color: var(--ubl-white);
+}
+
+#editCoilForm .modal-content{
+    border: solid 5px rgba(15,50,84,1);
+    border-radius: 0.6em;
+}
+
+#editCoilForm .modal-header, #editCoilForm .modal-footer {
+    /* background-color: rgba(255,20,0,0.8); */
+    background-color: rgba(15,50,84,1);
+    color: rgba(255, 255, 255, 1);    
+
+}
+
+
+#transferCoilForm .modal-content{
+    border: solid 5px var(--ubl-excellent);
+    border-radius: 0.6em;
+    font-weight: bold;
+}
+
+#transferCoilForm .modal-header{
+    background-color: var(--ubl-excellent);
+    color: rgba(255, 255, 255, 1);    
+}
+
+
+
+#deleteCoilForm .modal-header {
+    background-color: rgba(255,20,0,1);
+    /* background-color: rgba(15,50,84,1); */
+    color: rgba(255, 255, 255, 1);    
+
+}
+
+
+#deleteCoilForm .modal-content{
+    border: solid 5px rgba(255,20,0, 1) !important;
+    font-weight: bold;
+    border-radius: 0.6em;
+}
+
+.input-group .input-group-text {
+    width: 30% !important;
+}
+
+.coilNumbertd {
+    cursor: pointer;
+}
+
+.coilNumbertd:hover {
+    font-weight: bold;
+    color: var(--ubl-blue);
+    transition: 0.3s;
+    
+}
+
+
+
+@media only screen and (max-width:450px){
+    .mobile-optimised {
+        word-wrap: break-word;
+        font-size: 1em;
+        border:none;
+  
+    }
+  
+    table thead{
+        display: none;
+    }
+    
+    table tbody tr {
+        margin: 5em;
+  
+    }
+  
+    table tbody td {
+        display: block;
+        float:left;
+        clear: both;
+        box-sizing: border-box;
+    }
+    
+    table tbody .major {
+        background-color: var(--ubl-blue);
+        width: 100%;
+        color: var(--ubl-white) !important;
+  
+  
+    }
+    table tbody .minor {
+        width: 95%;
+        margin-left: 10%;
+    }
+        
+    table td a {
+        text-decoration: none !important;
+        color: var(--ubl-white) !important;
+    }
+  
+    .mobile-optimised {
+        overflow: hidden;
+  
+    }
+  
+    .mobile-optimised .minor:before, .mobile-optimised .minor {
+        display: inline;
+        float: left;
+        margin-left: 1.5em;
+      }
+  
+    .mobile-optimised .minor:before {
+        content: attr(data-th);
+        display: block;
+        font-weight: bold;
+        margin:0 0.3em 0.3em 0;
+        color:var(--ubl-blue);
+      }
+  
+      .option-buttons div{
+          display: inline-block;
+          width: 45%;
+          margin-left: 2.5%;
+      }
+    
+  
+  }
+
+.addCoil, .tranferMaterial, table thead {
+    background-color: var(--ubl-blue);
+    color: var(--ubl-white);
+    border: 2px solid var(--ubl-blue);
+}
+
+.addCoil:hover, .tranferMaterial:hover {
+    background-color: var(--ubl-orange);
+    border: 2px solid var(--ubl-orange);
+
+}
+
+
+
+
+/* .addCoil:click {
+    background-color: var(--ubl-blue);
+} */

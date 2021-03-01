@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+	{% block title %}
+		Production form
+	{% endblock  %}
+		
+	{% block css_static %}
+		<link rel="stylesheet" type="text/css" 
+			href="{% static 'production/css/grid.css' %}">
+		<link rel="stylesheet" type="text/css" 
+			href="{% static 'production/css/form_with_controls.css' %}">
+    {% endblock  %}
+
+    {% block content%}
+        <h1>{{lover}}</h1>
+
+        {% for data in order_running_meters %}
+            <div>
+                <p> {{data}}</p>
+            </div>
+            
+        {% endfor %}
+            
+    {% endblock %}

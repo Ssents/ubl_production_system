@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}Coils{% endblock  %}
+
+{% block css_static %}
+    <link rel="stylesheet" type="text/css" 
+        href="{% static 'production/css/grid.css' %}">
+{% endblock  %}
+
+
+{% block content %}
+    <form action="{% url 'coil-form' %}" method='post'>
+        {% csrf_token %}
+        <div class="col-md-7 mb-3">
+            <label for="first_name">Coil number</label>
+            <input type="text" class="form-control" name="coil_number" id="coil_number" required>
+        </div>
+
+    </form>
+{% endblock  %}
+    

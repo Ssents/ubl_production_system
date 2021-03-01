@@ -1,0 +1,370 @@
+{% extends 'with_sidebar.html' %}
+{% load static %}
+
+
+{% block title %}Planner{% endblock  %}
+
+
+{% block css_static %}
+    <link rel="stylesheet" href="{% static 'main/css/tables.css' %}">    
+    <link rel="stylesheet" href="{% static 'production/css/planner.css' %}">    
+{% endblock  %}
+
+{% block content %}
+    <main class="main-section py-3">
+        {% for message in messages %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>{{message}}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" 
+                aria-label="Close"></button>
+          </div>
+        {% endfor %}
+
+        <div class="row py-3 container">
+            <div class="col-md-9">
+                <h3>Planner</h3>
+            </div>
+            <div class="col-md-3">
+                <form class="d-flex" method="POST" action="{% url 'production:search_production_plan' %}">
+                    {% csrf_token %}
+                    <input class="form-control me-2" type="date" 
+                        placeholder="Search" aria-label="Search" name="date" required>
+
+                    <button class="btn btn-primary searchBtn" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="item col-sm-12 col-md-12 py-1 ">
+            <div class="card shadow p-3 mb-1 bg-white rounded">
+                <h3>Material</h3>
+                <table class="table py-5 mobile-optimised">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="major">Details</th>
+                            <th scope="col" class="minor">Type</th>
+                            <th scope="col" class="minor">Bond</th>
+                            <th scope="col" class="minor">Requested</th>
+                            <th scope="col" class="minor">Transferred</th>
+                            <th scope="col" class="minor">Production</th>
+                            <th scope="col" class="minor">Planned</th>
+                            <th scope="col" class="minor">Options</th>
+                        </tr>
+                        
+                    </thead>
+                    <tbody>
+                        
+                        {% for material in inventory %}
+                            <tr id="{{ forloop.counter }}">
+                                <th scope="row" class="major title"  data-th="Details">G<span class='gauge'>{{material.gauge}}</span> 
+                                    <span class='colour'>{{material.colour}}</span> 
+                                    <span class='finish'>{{material.finish}}</span> 
+                                    <span class='width'>{{material.width}}</span>
+                                </th>
+                                <td class="type minor" data-th="Type">UBL</td>
+                                <td class="minor" data-th="Bond: ">{{material.bond}}</td>
+                                <td class="minor" data-th="Requested: ">{{material.requested}}</td>
+                                <td class="minor" data-th="Transferred: ">{{material.transferred}}</td>
+                                <td class="minor" data-th="Production: ">{{material.production}}</td>
+                                <td class="minor" data-th="Planned: ">{{material.planned}}</td>
+                                <td class="minor" data-th="Options: ">
+                                    
+                                    {% if material.after_plan <= 0 %}
+                                        <p class="primary">No material</p>
+                                    {% else %}
+                                        <button type="button" class="btn btn-primary 
+                                            col-12 createPlan"
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#createPlanForm">
+                                            Plan
+                                        </button> 
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="item col-sm-12 col-md-12 py-1 ">
+            <div class="card shadow p-3 mb-1 bg-white rounded">
+                
+                <div class="row">
+                    <div class="col-md-10">
+                        <h4 >Date: <span id='currentDate'>01/02/2021</span></h4>
+                    </div>
+                </div>
+
+
+                <h3>Plan</h3>
+                <table class="table plan-table mobile-optimised">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="major">Machine</th>
+                            <th scope="col" class="minor">Date</th>
+                            <th scope="col" class="minor">Shift</th>
+                            <th scope="col" class="minor">Type</th>
+                            <th scope="col" class="minor">Order Number</th>
+                            <th scope="col" class="minor">Details</th>
+                            <th scope="col" class="minor">Tonage</th>
+                            <th scope="col" class="minor">Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        {% for plan in plan  %}
+                            <tr id="{{plan.id}}">
+                                <th scope="row" class="major title machineName" data-th="Machine">{{plan.machine}}</span>
+                                </th>
+                                <td class="minor date" data-th="Date:">{{plan.date}}</td>
+                                <td class="minor machineId" data-th="Machine ID:" hidden>{{plan.machine.id}}</td>
+                                <td class="minor shift" data-th="Shift:">{{plan.shift}}</td>
+                                <td class="minor productionType" data-th="Type:">{{plan.production_type}}</td>
+                                <td class="minor orderNumber" data-th="Order Number:">{{plan.order_number}}</td>
+                                <td class="minor details" data-th="Details:">G{{plan.gauge}} {{plan.colour}} {{plan.finish}} {{plan.width}}</td>
+                                <td class="minor tonage" data-th="Tonage:">{{plan.tonage}}</td>
+                                <td class="minor" data-th="Options:" class="row">
+                                    <button type="button" class="btn btn-primary col-md-5 edit editPlan"
+                                        data-bs-toggle="modal" data-bs-target="#editPlanForm">
+                                        Edit
+                                    </button>
+                                    <button type="button" class="btn btn-danger col-md-6 delete deletePlan"
+                                        data-bs-toggle="modal" data-bs-target="#deletePlanForm">
+                                        Delete
+                                    </button> 
+                                </td>
+                            </tr>
+                        {% endfor %}
+                            
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    
+<div class="container">
+
+    <!-- Modal Create form Alert-->
+    <div class="modal fade createModalForm" id="createPlanForm" data-bs-backdrop="static" 
+        data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" 
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content modal-edit-pieces">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">
+                        Create Plan
+                    </h5>
+                    <button type="button" class="btn-close" 
+                        data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <form class="row g-3" action="{% url 'production:create_plan' %}" 
+                    method="POST">
+                    <div class="modal-body">
+                        {% csrf_token %}
+                        <div class="col-md-12">
+                            <label for="inputMachineName" class="form-label" >Machine</label>
+                            <select id="input" class="form-select" name="machine_id" required>
+                                <option selected value="">Choose...</option>
+                                {% for machine in machines %}
+                                    <option value="{{machine.id}}">{{machine}}
+                                    </option>   
+                                {% endfor %}
+                                    
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <label for="inputShift" class="form-label">Shift</label>
+                            <select id="inputShift" class="form-select" name="shift" required>
+                                <option selected value="">Choose...</option>
+                                {% for key,value in shifts %}
+                                    <option value="{{key}}">{{value}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <label for="inputProductionType" class="form-label">Production Type</label>
+                            <select id="inputProductionType" class="form-select" 
+                                name="production_type" required>
+                                <option selected value="">Choose...</option>
+                                {% for key,value in production_type %}
+                                        <option value="{{key}}">{{value}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-12">
+                            <label for="inputOrderNumber" class="form-label">Order Number</label>
+                            <input type="text" class="form-control" id="inputOrderNumber"
+                                name="order_number" required>
+                        </div>
+
+                        <div class="col-sm-12" hidden>
+                            <label for="inputGauge" class="form-label">Gauge</label>
+                            <select id="inputGauge" class="form-select" name="gauge" required>
+                                <option selected value="">Choose...</option>
+                                {% for key,value in gauge %}
+                                    <option value="{{key}}">{{value}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-12" hidden>
+                            <label for="inputWidth" class="form-label">Width</label>
+                            <select id="inputWidth" class="form-select" name="width" required>
+                                <option selected value="">Choose...</option>
+                                {% for key,value in width %}
+                                    <option value="{{key}}">{{value}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    
+                        <div class="col-sm-12" hidden>
+                            <label for="inputcolour" class="form-label">Colour</label>
+                            <select id="inputColour" class="form-select" name="colour" required>
+                                <option selected value="">Choose...</option>
+                                {% for key, value in colour %}
+                                    <option value="{{key}}">{{value}}</option>   
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-sm-12" hidden>
+                            <label for="inputFinish" class="form-label">Finish</label>
+                            <select id="inputFinish" class="form-select" name="finish" required>
+                                <option selected value="">Choose...</option>
+                                {% for key,value in finish %}
+                                    <option value="{{key}}">{{value}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label for="inputFinalMass" class="form-label">Tonage</label>
+                            <input type="number" step="0.001" class="form-control" id="inputFinalMass"
+                                name="tonage" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary bg-danger" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+                </div>
+        </div>
+    </div>
+
+
+    <!-- Modal Edit form Alert-->
+    <div class="modal fade editModalForm" id="editPlanForm" data-bs-backdrop="static" 
+        data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" 
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content modal-edit-pieces">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">
+                        Edit Plan
+                    </h5>
+                    <button type="button" class="btn-close" 
+                        data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <form class="row g-3" action="{% url 'production:edit_plan' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="col-md-12" hidden>
+                            <label for="inputPlanIdEdit" class="form-label">Plan ID</label>
+                            <input type="number" class="form-control" id="inputPlanIdEdit"
+                                name="plan_id"  required>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="inputMachineNameEdit" class="form-label">Machine</label>
+                            <select id="inputMachineNameEdit" class="form-select" 
+                                name="machine_id" required>
+                                <option selected value="">Choose...</option>
+                                {% for machine in machines %}
+                                    <option value="{{machine.id}}">{{machine}}</option>   
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="inputShiftEdit" class="form-label">Shift</label>
+                            <select id="inputShiftEdit" class="form-select" 
+                                name="shift" required>
+                                <option selected value="">Choose...</option>
+                                {% for key,value in shifts %}
+                                    <option value="{{key}}">{{value}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-12">
+                            <label for="inputProductionTypeEdit" class="form-label">Production Type</label>
+                            <select id="inputProductionTypeEdit" class="form-select" 
+                                name="production_type" required>
+                                <option selected value="">Choose...</option>
+                                {% for key,value in production_type %}
+                                        <option value="{{key}}">{{value}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-12">
+                            <label for="inputOrderNumberEdit" class="form-label">Order Number</label>
+                            <input type="text" class="form-control" id="inputOrderNumberEdit"
+                                name="order_number" required>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label for="inputTonageEdit" class="form-label">Tonage</label>
+                            <input type="number" class="form-control" id="inputTonageEdit"
+                                name="tonage"  step="0.001" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary bg-danger" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+                </div>
+        </div>
+    </div>
+
+    <!-- Modal Delete Alert-->
+    <div class="modal fade deleteModalForm" id="deletePlanForm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{% url 'production:delete_plan' %}" method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Delete Plan</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" 
+                            aria-label="Close"></button>
+                    </div>
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <input type="text" class="form-control" 
+                        id="inputPlanIdDelete" name="plan_id" hidden>
+                        Are you sure you want to Delete the plan?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" 
+                            data-bs-dismiss="modal">No</button>
+                        <button type="submit" class="btn btn-primary">Yes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock  %}
+    
+{% block javascript_block %}
+    <script type="text/javascript" src="{% static 'production/js/planner.js' %}"></script>
+{% endblock  %}
+    

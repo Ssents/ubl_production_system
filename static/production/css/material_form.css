@@ -1,0 +1,86 @@
+:root {
+    --ubl-blue: rgba(15,50,84,1);
+    --ubl-orange: rgba(255, 20, 0, 0.8);
+    --ubl-white: rgba(255, 255, 255, 1);
+
+    --ubl-excellent: rgba(37, 184, 17, 0.986);
+    --ubl-fair: rgba(255,163,0,0.8);
+    --ubl-poor: rgb(221, 17, 17);
+
+    --ubl-black: rgb(0, 0, 0, 1);
+
+}
+
+.add-new button, .submit-button, .toPieces  {
+    background-color:  var(--ubl-blue) !important;
+    color: var(--ubl-white) !important;
+
+}
+
+a, a:hover {
+    text-decoration: none;
+}
+
+.add-new button:hover, .submit-button:hover{
+    background-color:  var(--ubl-orange) !important;
+    color: var(--ubl-white);
+
+}
+
+
+.toPieces:hover {
+    background-color: rgba(255,20,0,0.8) !important;
+
+}
+
+.order-form {
+    border: solid 2px rgba(15,50,84,1);
+}
+
+input {
+    background-color: rgba(255,20,0,0.8);
+}
+
+.machine-title {
+    text-align: left;
+    background-color: rgba(255,20,0,0.8) !important;
+    color: rgba(255, 255, 255, 1);
+}
+
+
+.modal-content{
+    border: solid 5px rgba(15,50,84,1);
+    border-radius: 0.6em;
+}
+
+.modal-header {
+    /* background-color: rgba(255,20,0,0.8); */
+    background-color: rgba(15,50,84,1);
+    color: rgba(255, 255, 255, 1);    
+
+}
+
+#deleteMaterialForm .modal-header {
+    background-color: rgba(255,20,0,1);
+    /* background-color: rgba(15,50,84,1); */
+    color: rgba(255, 255, 255, 1);    
+
+}
+
+#deleteMaterialForm .modal-content{
+    border: solid 5px rgba(255,20,0, 1) !important;
+    border-radius: 0.6em;
+}
+
+.alert-question {
+    font-weight: bold;
+}
+
+thead {
+    background-color: rgba(15,50,84,1);
+    color: rgba(255, 255, 255, 1);
+}
+
+.coilNumber:hover {
+    cursor: pointer;
+}

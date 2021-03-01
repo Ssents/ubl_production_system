@@ -1,0 +1,114 @@
+{% extends 'with_sidebar.html' %}
+{% load static %}
+
+{% block css_static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'production/css/standard_material_list.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'production/css/standard_list_details.css' %}">
+{% endblock  %}
+
+
+{% block title %}Order list{% endblock  %}
+
+
+{% block content %}
+        
+    <header  class="py-5">
+        <h3>Standard material</h3>
+    </header>
+
+    <div class="wrapper ">
+        <div id="tableView" class="main-table  py-4">
+            <table class="table mobile-optimised shadow p-3 mb-5 bg-white rounded material-table">
+                <thead>
+                  <tr >
+                    <th scope="col" class="major">Profile</th>
+                    <th scope="col" class="minor">Details</th>
+                    <th scope="col" class="minor">Type</th>
+                    <th scope="col" class="minor">Coil Number</th>
+                    <th scope="col" class="minor">Initial Mass</th>
+                    <th scope="col" class="minor">Final Mass</th>
+                    <th scope="col" class="minor">Piece length</th>
+                    <th scope="col" class="minor">Prime pieces</th>
+                    <th scope="col" class="minor">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for material in order_list %}
+                        <tr id="{{material.id}}" class="main-table-row complete row-body">
+                            <td class="major"  data-th="Profile">
+                                <a href="{% url 'production:edit-material-page' order.id %}">
+                                    <span class="title">{{material.order.profile}}</span> 
+                                    <span class="icon" id="detailsId"><i class="fas fa-chevron-circle-down"></i></span>
+                                </a>
+                            </td>
+        
+                            <td class="major" data-th="Details:">
+                                G{{material.order.order_gauge}} {{material.order.order_colour}} 
+                                {{material.order.order_finish}} {{material.order.order_width}}
+                            </td>
+
+                            <td class="minor"  data-th="Type:">{{material.order.order_number}} </td>
+        
+                            <td class="minor" data-th="Coil number:">{{material.coil.coil_number}}</td>
+                            <td class="minor" data-th="Initial mass:">{{material.coil.initial_mass}}</td>
+                            <td class="minor" data-th="Final mass:">{{material.coil.final_mass}}</td>
+        
+                            <td class="minor" data-th="Piece length:">{{material.piece_length}}</td>
+                            <td class="minor" data-th="Prime pieces:">{{material.prime_pieces}}</td>
+                            <td class="minor" data-th="Status:">
+                                
+                                {% if material.status == "Not Transferred" %}
+                                    <a href="{% url 'production:transfer_material' material.id %}">
+                                        <button type="button" class="btn btn-primary tranferMaterial col-md-12">
+                                            Transfer
+                                        </button>
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'production:reverse_transfer' material.id %}">
+                                        <button type="button" class="btn btn-secondary reverseTransfer col-md-12" >
+                                            Reverse Transfer
+                                        </button>
+                                    </a>                                  
+                                {% endif %}
+                            </td>
+                        </tr>                      
+                    {% endfor %} 
+                </tbody>
+            </table>
+        </div>
+    </div> 
+    
+        <!-- Modal Edit Alert-->
+    <div class="modal fade" id="transferMaterialForm" data-bs-backdrop="static" 
+        data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" 
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content modal-edit-pieces">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">
+                        Transfer Material
+                    </h5>
+                    <button type="button" class="btn-close" 
+                        data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="editMaterialFormContent row g-3">
+                      <div class="col-md-12">
+                          Transfer Material?
+                      </div>
+        
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary bg-danger col-md-2" 
+                          data-bs-dismiss="modal">No</button>
+                        <button type="button" class="btn btn-primary col-md-2"
+                          id="confirmEditMaterial">Yes</button>
+                      </div>
+                    </form>
+              </div>
+            </div>
+        </div>
+    </div>
+{% endblock  %}
+    
+  

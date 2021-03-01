@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+    Coil Form
+{% endblock  %}
+    
+
+
+{% block content %}
+        <form method="POST" action="{{order_id}}/create-coil/">
+			<div class="item">
+                {% csrf_token %}
+				<div class="col-md-6 mb-3">
+					<h3> Coil details </h3>
+				</div>
+				<div class="col-md-12 mb-3">
+				<label for="coilNumberValidation">Coil number</label>
+				<input type="text" class="form-control is-valid" 
+				id="coilNumberValidation" value="" required name="coil-number">
+				</div>
+
+				<div class="form-row col-md-12">
+
+					<div class="col-md-6 mb-3">
+						<label for="OriginalMassValidation">Original mass(Kgs)</label>
+						<input type="number" class="form-control is-valid" 
+						id="OriginalMassValidation" value="" name="initial-mass" required>
+					</div>
+
+					<div class="col-md-6 mb-3">
+						<label for="finalMassValidation">Final mass(Kgs)</label>
+						<input type="number" class="form-control is-valid" i
+						d="finalMassValidation" value="" name="final-mass" required>
+					</div>
+				</div>
+				<div class="form-row col-md-12">
+					<div class="col-md-6 mb-3">
+						<label for="coilStatusValidation">Coil status</label>
+						<select class="custom-select d-block w-100" id="coilStatusValidation" required>
+							<option value="">status</option>
+							<option>New Coil</option>
+							<option>Half coil</option>		
+						</select>
+					</div>
+                </div>
+                
+                <button type="submit" class="btn btn-success col-lg-6 add-new" 
+                    data-toggle="button" aria-pressed="false" 
+                    id="submit-order">
+                    Submit Order
+                </button>
+            </div>
+        </form>
+{% endblock  %}
+    

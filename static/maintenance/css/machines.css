@@ -1,0 +1,40 @@
+:root {
+    --ubl-blue: rgba(15,50,84,1);
+    --ubl-orange: rgba(255, 20, 0, 1);
+    --ubl-white: rgba(255, 255, 255, 1); 
+}
+
+body {
+    font-size: 1em;
+    
+}
+
+.card-item, {
+    border: solid 2px rgba(255, 80, 0, 1);
+    color: rgba(0, 0, 80, 1);
+}
+
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-gap: 1em;
+}
+
+
+.card-link {
+    text-decoration: none;
+    color: rgba(0, 0, 80, 1) !important;
+
+}
+
+.paginator .pagination .page-item a {
+    background-color: var(--ubl-orange);
+    color: var(--ubl-white);
+}
+
+.paginator .pagination .active a {
+    background-color: var(--ubl-blue);
+    color: var(--ubl-white);
+    border: solid 1px var(--ubl-blue);
+}

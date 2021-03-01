@@ -1,0 +1,56 @@
+$(document).ready(function(){
+    // Get value on button click and show alert
+    var general_url = "http://127.0.0.1:8000/machines/";
+    
+    $('#material-form').submit(function(e){
+        e.preventDefault();
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+
+        var part_url = "create-material/";
+        url = general_url + part_url;
+
+        var order_id = $('#order-id').val();
+        order_id="1";
+        
+        var coil_number = $('#coil-number').val();
+        var initial_mass = $('#initial-mass').val();
+        var final_mass = $('#final-mass').val();
+        console.log('order_id',order_id, 'coil_number',coil_number, initial_mass, final_mass);
+
+        $.ajax({
+            type:"POST",
+            headers: { "X-CSRFToken": csrftoken },
+            url: url,
+            dataType: "json",
+            data: {
+                'order_id':order_id,
+                'coil_number':coil_number,
+                'initial_mass': initial_mass,
+                'final_mass':final_mass
+            },
+            success: function (data) {
+                console.log("Ebyo byebyo", data);
+            }
+
+        });
+
+        }
+    );
+
+});

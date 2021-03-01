@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Register{% endblock  %}
+
+{% block css_static %}
+        <link rel="stylesheet" type="text/css" 
+        href="{% static 'production/css/grid.css' %}">
+
+        <link rel="stylesheet" type="text/css" 
+        href="{% static 'accounts/css/register.css' %}">
+{% endblock  %}
+
+{% block content %}
+<div class="container col-md-8 py-5 ">
+    <div class="card-body">
+
+        <!-- Alert -->
+        {% include 'partials/_alerts.html' %}
+
+        <form class="" form-action="{% url 'accounts:register' %}" method='POST'>
+            {% csrf_token %}
+
+            <div class="col-md-7 mb-3">
+                <label for="first_name">First name</label>
+                <input type="text" class="form-control" name="first_name" id="first_name" required>
+            </div>
+
+            <div class="col-md-7 mb-3">
+                <label for="last_name">Last name</label>
+                <input type="text" class="form-control" name="last_name" id="last_name" required>
+            </div>
+
+            <div class="col-md-7 mb-3">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" name="username" id="username" required>
+            </div>
+
+            <div class="col-md-7 mb-3">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" name="email" id="email" required>
+            </div>
+
+            <div class="col-md-7 mb-3">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" name="password" id="password" required>
+            </div>
+
+            
+            <div class="col-md-7 mb-3">
+                <label for="password2">Confirm Password</label>
+                <input type="password" class="form-control" name="password2" id="password2" required>
+            </div>
+            
+            <button class="btn btn-primary col-md-7 mb-3" type="submit">Submit form</button>
+
+        </form>
+    </div>
+
+</div>
+{% endblock  %}
+    

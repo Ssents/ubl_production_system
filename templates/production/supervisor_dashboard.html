@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}Supervisor dashboard{% endblock  %}
+
+
+{% block css_static %}
+    <link rel="stylesheet" type="text/css" 
+        href="{% static 'production/css/supervisor_dashboard.css' %}">
+{% endblock  %}
+    
+
+{% block content %}
+    <section id="body-toggle">
+        <div class="grid">
+            <div class="item">
+                {% include 'partials/_sidebar.html' %}
+            </div>
+            <div class="item">
+            </div>
+        </div>
+    </section>
+{% endblock  %}
+    

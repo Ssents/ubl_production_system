@@ -1,0 +1,46 @@
+{% extends 'with_sidebar.html' %}
+{% load static %}
+
+
+
+{% block title %}
+    Production Coils
+{% endblock  %}
+    
+
+{% block content %}
+    
+<h4>Coils</h4>
+<div class="wrapper ">
+    <div id="tableView" class="main-table  py-4">
+        <table class="table mobile-optimised shadow p-3 mb-5 bg-white rounded material-table">
+            <thead>
+              <tr >
+                <th scope="col" class="major">Coil Number</th>
+                <th scope="col" class="minor">Details</th>
+                <th scope="col" class="minor">Initial Mass</th>
+                <th scope="col" class="minor">Current Mass</th>
+                <th scope="col" class="minor">Running Meters</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for material in coil_list %}
+                    <tr class="main-table-row complete row-body">
+                        <td class="major"  data-th="Coil Number:">{{material.coil_number}} </td>
+                        <td class="minor" data-th="Details:">
+                            G{{material.coil_gauge}} {{material.coil_colour}} 
+                            {{material.coil_finish}} {{material.coil_width}}
+                        </td>
+
+                        <td class="minor"  data-th="Initial mass:">{{material.initial_mass}} </td>
+    
+                        <td class="minor" data-th="Current mass:">{{material.final_mass}}</td>
+                        <td class="minor" data-th="Running meters:">{{material.initial_running_meters}}</td>
+                    </tr>                      
+                {% endfor %} 
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock  %}
+    

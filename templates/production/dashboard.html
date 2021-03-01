@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block css_static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'production/css/dashboard.css' %}">
+{% endblock  %}
+    
+{% block title %}
+  {{ machinery.machine_name }}-{{machinery.machine_number}}
+{% endblock  %}
+
+{% block content %}
+<div class="container py-4">
+  <!-- Body -->
+  <div class="row ">
+    <div class=" col-12 py-2 ">
+        <div class="shadow p-3 mb-5 bg-white rounded machine-title">
+            <div class="row">
+                <h5 class="card-title col-6">{{machinery.machine_name}} {{machinery.machine_number}}</h5>
+                <h5 class="card-title col-6">UBL 00046D</h5>
+                <!-- <p class="card-text">Arnold </p> -->
+            </div>
+        </div>
+    </div>
+  </div>
+  <div class="row py-5">
+      <div class="col-sm-6 col-lg-3 py-1 ">
+          <div class="card shadow p-3 mb-1 bg-white rounded">
+              <div class="card-body ">
+                  <h5 class="card-title">Entries</h5>
+                  <p class="card-text">{{order_list.count|apnumber}} order{{order_list.count|pluralize}}</p>
+              </div>
+          </div>
+      </div>
+      <div class="col-sm-6 col-lg-3 py-1">
+          <div class="card shadow p-3 mb-1 bg-white rounded">
+              <div class="card-body">
+                  <h5 class="card-title">Machine Status</h5>
+                  <p class="card-text">Operational</p>
+              </div>
+          </div>
+      </div>
+      <div class="col-sm-6 col-lg-3 py-1">
+          <div class="card shadow p-3 mb-1 bg-white rounded">
+              <div class="card-body">
+                  <h5 class="card-title">Target</h5>
+                  <p class="card-text" id="productionTarget">{{machine_target}}</p>
+              </div>
+          </div>
+      </div>
+      <div class="col-sm-6 col-lg-3 py-1 producedTonageCol">
+          <div class="card shadow p-3 mb-1 bg-white rounded producedTonageCard">
+              <div class="card-body ">
+                  <h5 class="card-title">Production</h5>
+                  <p class="card-text" id="producedTonage">{{total_tonage}}</p>
+              </div>
+          </div>
+      </div>
+  </div>
+  
+  <div class="form py-5 shadow p-3 mb-5 bg-white rounded search-form">
+      <form class="row g-3" action="{% url 'production:dashboard_search' %}" method="POST">
+        <div class="col-12">
+          <h3>Order Search</h3>
+        </div>
+        {% csrf_token %}
+          <div class="col-md-3">
+            <label for="inputOrderNumber" class="form-label">Order number</label>
+            <input type="email" class="form-control" name="order_number" 
+              id="inputOrderNumber">
+          </div>
+
+          <div class="col-md-3">
+            <label for="inputColour" class="form-label">Colour</label>
+            <select name="order_colour" class="form-control" id="inputColour">
+              <option selected="true" disabled="disabled">Colour (All)</option>
+              {% for key, value in colour %}
+                <option value= "{{ key }}">{{value}}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="col-md-2">
+            <label for="inputFinish" class="form-label">Finish</label>
+            <select name="order_gauge" class="form-control">
+              <option selected="true" disabled="disabled" if="inputFinish">Finish (All)</option>
+              {% for key, value in finish %}
+                <option value= "{{ key }}">{{value}}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="col-md-2">
+            <label for="inputGauge" class="form-label">Gauge</label>
+            <select name="order_gauge" class="form-control" id="inputGauge">
+              <option selected="true" disabled="disabled">Gauge (All)</option>
+              {% for key, value in gauge %}
+                <option value= "{{ key }}">{{value}}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="col-md-2">
+            <label for="inputWidth" class="form-label">Width</label>
+            <select name="order_width" class="form-control" id="inputWidth">
+              <option selected="true" disabled="disabled">Gauge (All)</option>
+              {% for key, value in width %}
+                <option value= "{{ key }}">{{value}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-lg-12 mt-5">
+            <button type="submit" class="btn btn-primary col-lg-12 submit-button">Search</button>
+          </div>
+        </form>
+  </div>
+
+
+
+  <div class="add-new ">
+    <a href="{% url 'production:create-order-page' machinery.id %}">
+    <button type="button" class="btn btn-primary col-lg-3 submit-button">
+      Add Order
+    </button>
+    </a>
+  </div>
+
+
+
+  <div class="wrapper ">
+    <div id="tableView" class="main-table  py-4">
+        <table class="table mobile-optimised shadow p-3 mb-5 bg-white rounded">
+            <thead>
+              <tr >
+                <th scope="col">Name</th>
+                <th scope="col">Details</th>
+                <th scope="col">Tonage</th>
+                <th scope="col">Status</th>
+                <th scope="col">Options</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in order_list %}
+                <tr id={{order.id}}
+                  {% if order.order_completed %}
+                    class="main-table-row complete"
+                  {% else %}
+                    class="main-table-row incomplete"
+                  {% endif %}
+                >
+                  
+                  <td class="major orderNumber"  data-th="Name">
+                    <a  href="{% url 'production:edit-order-page' order.id %}"
+                      class="edit-link">
+                      {{order.order_number}}
+                      <i class="fas fa-edit"></i>
+                    </a>
+                  </td>
+
+                  <td class="minor" data-th="Details">
+                    G{{order.order_gauge}} 
+                    {{order.order_colour}} 
+                    {{order.order_finish}} 
+                    {{order.order_width}}
+                  </td>
+
+                  <td class="minor" data-th="Tonage">{{order.order_tonage}}</td>
+
+                  <td class="minor" data-th="Status">
+                    {% if order.order_completed %}
+                      Completed
+                    {% else %}
+                      Incomplete
+                    {% endif %}
+                  </td>
+
+                  <td class="minor" data-th="Options">
+                    <button type="button" class="btn btn-primary col-lg-5 edit"><a 
+                      href="{% url 'production:edit-material-page' order.id %}">
+                      Material</a>
+                    </button>
+                    <button type="button" class="btn btn-danger col-lg-5"
+                      id="deleteOrderButton" data-bs-toggle="modal" 
+                      data-bs-target="#deleteOrderForm">
+                      Delete</button>
+
+                      <a class="delete-url" disabled hidden 
+                        href="{% url 'production:delete-order' order.id %}">
+                        {% url 'production:delete-order' order.id %}
+                      </a>        
+                  </td>
+                </tr>           
+              {% endfor %}
+
+            </tbody>
+          </table>
+    </div>
+  </div>
+        
+  <!-- Modal Delete Alert-->
+  <div class="modal fade" id="deleteOrderForm" data-bs-backdrop="static" 
+    data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" 
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Delete Piece</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"
+           aria-label="Close">
+          </button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete Order?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary bg-danger" 
+            data-bs-dismiss="modal">No</button>
+          <a id="deleteConfirm" href="32412">
+            <button type="button" class="btn btn-primary">Yes</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock  %}
+  
+
+{% block javascript_block %}
+  <script type="text/javascript" src="{% static 'production/js/dashboard.js' %}"></script>
+{% endblock  %}

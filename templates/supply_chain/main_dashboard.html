@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block css_static %}   
+{% endblock  %}
+    
+
+{% block title %}Supply chain Dashboard{% endblock  %}
+
+
+{% block content %}
+
+    <div class="wrapper ">
+        
+        {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>{{message}}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" 
+                aria-label="Close"></button>
+          </div>
+        {% endfor %}
+            
+
+        <div id="tableView" class="main-table  py-4">
+            <div class="row py-3">
+                <button type="button" class="btn btn-primary 
+                    addCoil col-md-2" data-bs-toggle="modal" 
+                    data-bs-target="#createCoilForm">Create Coil
+                 </button>
+            </div>
+            <table class="table mobile-optimised shadow p-3 mb-5 bg-white rounded 
+                material-table">
+                <thead>
+                <tr >
+                    <!-- <th scope="col" class="major">Details</th> -->
+                    <th scope="col" class="minor">Details</th>
+                    <th scope="col" class="minor">Bond</th>
+                    <th scope="col" class="minor">Transferred today</th>
+                    <th scope="col" class="minor">Production</th>
+                    <th scope="col" class="minor">Total</th>
+                    <th scope="col" class="minor">Options</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for material in inventory_report %}
+                        <tr id="{{material.id}}" class="main-table-row complete row-body">
+        
+                            <td class="major" data-th="Details:">
+                                G<span class='coilGauge'>{{material.coil_gauge}}</span> 
+                                <span class='coilColour'>{{material.coil_colour}}</span> 
+                                <span class='coilFinish'>{{material.coil_finish}}</span> 
+                                <span class='coilWidth'>{{material.coil_width}}</span>
+                            </td>
+
+                            <td class="major" data-th="Details:">
+                                {{material.bond}}
+                            </td>
+
+                            <td class="major" data-th="Details:">
+                                {{material.transferred}}
+                            </td>
+
+                            <td class="major" data-th="Details:">
+                                {{material.production}}
+                            </td>
+                            <td class="major" data-th="Details:">
+                                {{material.total}}
+                            </td>
+
+
+                            <td class="minor row" data-th="Options:">
+                                <div class="row option-buttons">
+                                    <div class="DSAFD">
+                                        <button type="button" class="btn btn-primary 
+                                            tranferMaterial" data-bs-toggle="modal" 
+                                            data-bs-target="#transferCoilForm">Details
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>                      
+                    {% endfor %} 
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock  %}
+    
+
+
+{% block javascript_block %}
+{% endblock  %}
+    

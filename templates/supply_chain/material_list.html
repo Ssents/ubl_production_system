@@ -1,0 +1,411 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block css_static %}
+    <link rel="stylesheet" href="{% static 'supply_chain/css/dashboard.css' %}">    
+{% endblock  %}
+    
+
+{% block title %}Supply chain Dashboard{% endblock  %}
+
+
+{% block content %}
+
+    
+    <div class="wrapper ">
+        
+        {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>{{message}}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" 
+                aria-label="Close"></button>
+          </div>
+        {% endfor %}
+            
+
+        <div id="tableView" class="main-table  py-4">
+            <div class="row py-3">
+                <button type="button" class="btn btn-primary 
+                    addCoil col-md-2" data-bs-toggle="modal" 
+                    data-bs-target="#createCoilForm">Create Coil
+                 </button>
+            </div>
+            <table class="table mobile-optimised shadow p-3 mb-5 bg-white rounded 
+                material-table">
+                <thead>
+                <tr >
+                    <th scope="col" class="major">Coil Number</th>
+                    <th scope="col" class="minor">Details</th>
+                    <th scope="col" class="minor">Initial Mass</th>
+                    <th scope="col" class="minor">Initial Running Meters</th>
+                    <th scope="col" class="minor">Location</th>
+                    <th scope="col" class="minor">Options</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for material in coils %}
+                        <tr id="{{material.id}}" class="main-table-row complete row-body">
+                            <td class="major coilNumbertd"  data-th="Coil Number:" 
+                                data-bs-toggle="modal" data-bs-target="#editCoilForm">
+                                    <span class="coilNumberSpan">{{material.coil_number}}</span> 
+                                    <span class="icon" id="detailsId">
+                                        <i class="fas fa-edit"></i>
+                                    </span>
+                            </td>
+        
+                            <td class="major" data-th="Details:">
+                                G<span class='coilGauge'>{{material.coil_gauge}}</span> 
+                                <span class='coilColour'>{{material.coil_colour}}</span> 
+                                <span class='coilFinish'>{{material.coil_finish}}</span> 
+                                <span class='coilWidth'>{{material.coil_width}}</span>
+                            </td>
+
+                            <td class="minor initialMass" 
+                                data-th="Initial Mass:">{{material.initial_mass}}</td>
+                            <td class="minor initialRunningMeters" 
+                                data-th="Running Meters:">{{material.initial_running_meters}}</td>
+                            <td class="minor" data-th="Location:">{{material.location}}</td>
+                            <td class="minor row" data-th="Options:">
+                                <div class="col-sm-12 row option-buttons">
+                                    <div class="col-lg-6">
+                                        <button type="button" class="btn btn-primary 
+                                            tranferMaterial col-12" data-bs-toggle="modal" 
+                                            data-bs-target="#transferCoilForm">Transfer
+                                        </button>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <button type="button" class="btn btn-danger 
+                                            deleteCoilButton col-12" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#deleteCoilForm">Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>                      
+                    {% endfor %} 
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<!-- Modal Edit Coil-->
+
+<div class="modal fade" id="editCoilForm" data-bs-backdrop="static" 
+  data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" 
+  aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content modal-edit-pieces">
+          <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">
+                  Edit Coil
+              </h5>
+              <button type="button" class="btn-close" 
+                  data-bs-dismiss="modal" aria-label="Close">
+              </button>
+          </div>
+          <div class="modal-body">
+            <form class="row g-3 py-3" action="{% url 'supply_chain:edit_coil' %}" method="POST">
+                {% csrf_token %}
+                <input type="text" class="form-control" id="coilId" name="coil_id" hidden>
+                                
+                <div class="mb-3 row">
+                    <div class="col-md-4">
+                        <label for="coilNumber" class="form-label">Coil Number</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" id="coilNumber" 
+                            name="coil_number">
+                    </div>
+                </div>
+  
+                                
+                <div class="mb-3 row">
+                    <div class="col-md-4">
+                        <label for="gaugeValdation" class="form-label">Coil Gauge</label>
+                    </div>
+                    <div class="col-md-8">
+                        <select class="custom-select" name="coil_gauge"
+							id="gaugeValdation" required>
+							<option value="">gauge</option>
+							{% for key,value in gauge_choices %}
+								<option value="{{key}}">{{value}}</option>								
+							{% endfor %}
+						</select>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <div class="col-md-4">
+                        <label for="widthValdation" class="form-label">Coil Width</label>
+                    </div>
+                    <div class="col-md-8">
+                        <select class="custom-select" name="coil_width"
+							id="widthValdation" required>
+							<option value="">width</option>
+							{% for key,value in width_choices %}
+								<option value="{{key}}">{{value}}</option>								
+							{% endfor %}
+						</select>
+                    </div>
+                </div>
+
+                                
+                <div class="mb-3 row">
+                    <div class="col-md-4">
+                        <label for="colourValdation" class="form-label">Coil Colour</label>
+                    </div>
+                    <div class="col-md-8">
+                        <select class="custom-select" name="coil_colour"
+							id="colourValdation" required>
+							<option value="">colour</option>
+							{% for key,value in colour_choices %}
+								<option value="{{key}}">{{value}}</option>								
+							{% endfor %}
+						</select>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <div class="col-md-4">
+                        <label for="finishValdation" class="form-label">Coil Finish</label>
+                    </div>
+                    <div class="col-md-8">
+                        <select class="custom-select" name="coil_finish"
+							id="finishValdation" required>
+							<option value="">finish</option>
+							{% for key,value in finish_choices %}
+								<option value="{{key}}">{{value}}</option>								
+							{% endfor %}
+						</select>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <div class="col-md-4">
+                        <label for="initialMass" class="form-label">Initial Mass</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input type="number" class="form-control" id="initialMass" 
+                             name="initial_mass">
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <div class="col-md-4">
+                        <label for="inputRunningMeters" class="form-label">
+                            Running Meters
+                        </label>
+                    </div>
+                    <div class="col-md-8">
+                        <input type="number" class="form-control" id="inputRunningMeters"
+                            name="initial_running_meters">
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+          <button type="button" class="btn btn-secondary bg-danger" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" id="confirmEditPieces">Save</button>
+          </div>
+        </form>
+        </div>
+  </div>
+</div>
+
+
+<!-- Modal Create Coil -->
+
+<div class="modal fade" id="createCoilForm" data-bs-backdrop="static" 
+  data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" 
+  aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content modal-edit-pieces">
+          <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">
+                  Create Coil
+              </h5>
+              <button type="button" class="btn-close" 
+                  data-bs-dismiss="modal" aria-label="Close">
+              </button>
+          </div>
+          <div class="modal-body">
+              <form class="row g-3 py-3"  action="{% url 'supply_chain:create_coil' %}"
+                method="POST">
+                {% csrf_token %}
+                <div class="mb-3 row">
+                    <div class="col-md-4">
+                        <label for="coilNumber" class="form-label">Coil Number</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" name='coil_number' 
+                        id="coilNumber" required>
+                    </div>
+                </div>
+  
+                                
+                <div class="mb-3 row">
+                    <div class="col-md-4">
+                        <label for="gaugeValdation" class="form-label">Coil Gauge</label>
+                    </div>
+                    <div class="col-md-8">
+                        <select class="custom-select" name="coil_gauge"
+							id="gaugeValdation" required>
+							<option value="">gauge</option>
+							{% for key,value in gauge_choices %}
+								<option value="{{key}}">{{value}}</option>								
+							{% endfor %}
+						</select>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <div class="col-md-4">
+                        <label for="widthValdation" class="form-label">Coil Width</label>
+                    </div>
+                    <div class="col-md-8">
+                        <select class="custom-select" name="coil_width"
+							id="widthValdation" required>
+							<option value="">width</option>
+							{% for key,value in width_choices %}
+								<option value="{{key}}">{{value}}</option>								
+							{% endfor %}
+						</select>
+                    </div>
+                </div>
+
+                                
+                <div class="mb-3 row">
+                    <div class="col-md-4">
+                        <label for="colourValdation" class="form-label">Coil Colour</label>
+                    </div>
+                    <div class="col-md-8">
+                        <select class="custom-select" name="coil_colour"
+							id="colourValdation" required>
+							<option value="">colour</option>
+							{% for key,value in colour_choices %}
+								<option value="{{key}}">{{value}}</option>								
+							{% endfor %}
+						</select>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <div class="col-md-4">
+                        <label for="finishValdation" class="form-label">Coil Finish</label>
+                    </div>
+                    <div class="col-md-8">
+                        <select class="custom-select" name="coil_finish"
+							id="finishValdation" required>
+							<option value="">finish</option>
+							{% for key,value in finish_choices %}
+								<option value="{{key}}">{{value}}</option>								
+							{% endfor %}
+						</select>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <div class="col-md-4">
+                        <label for="initialMass" class="form-label">Initial Mass</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input type="number" class="form-control" id="initialMass" 
+                            name="initial_mass" required>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <div class="col-md-4">
+                        <label for="inputRunningMeters" class="form-label">Running Meters</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input type="number" class="form-control" id="inputRunningMeters"
+                            name="initial_running_meters" required>
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+          <button type="button" class="btn btn-secondary bg-danger" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" id="confirmEditPieces">Submit</button>
+          </div>
+        </form>
+        </div>
+  </div>
+</div>
+
+
+
+<!-- Modal Delete Coil-->
+    <div class="modal fade" id="deleteCoilForm" data-bs-backdrop="static" 
+        data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" 
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{% url 'supply_chain:delete_coil' %}" method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Delete Coil</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" 
+                            aria-label="Close"></button>
+                    </div>
+
+                    {% csrf_token %}
+
+                    
+
+                    <div class="modal-body">
+                        <input type="text" class="form-control" 
+                        id="coilIdDelete" name="coil_id" hidden>
+                        Are you sure you want to Delete the coil <span 
+                        id="coilNumberDelete"></span>?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" 
+                            data-bs-dismiss="modal">No</button>
+                        <button type="submit" class="btn btn-primary">Yes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+  <!-- Modal Transfer Coil-->
+  <div class="modal fade" id="transferCoilForm" data-bs-backdrop="static" 
+    data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" 
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{% url 'supply_chain:transfer_coil' %}" method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Transfer Coil</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" 
+                        aria-label="Close"></button>
+                </div>
+
+                {% csrf_token %}
+                    <div class="modal-body">
+                        <input type="text" class="form-control" 
+                            id="coilIdTransfer" name="coil_id" hidden>
+
+                        Are you sure you want to Transfer the coil <span 
+                        id="coilNumberTransfer"></span>?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" 
+                            data-bs-dismiss="modal">No</button>
+                        <button type="submit" class="btn btn-primary">Yes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+  
+
+{% endblock  %}
+    
+
+
+{% block javascript_block %}
+    <script type="text/javascript" src="{% static 'supply_chain/js/dashboard.js' %}"></script>
+{% endblock  %}
+    

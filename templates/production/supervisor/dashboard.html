@@ -1,0 +1,172 @@
+{% extends 'with_sidebar.html' %}
+{% load static %}
+
+
+{% block title %}Supervisor dashboard{% endblock  %}
+
+
+{% block css_static %}
+    <link rel="stylesheet" type="text/css" 
+        href="{% static 'production/css/supervisor_dashboard.css' %}">
+{% endblock  %}
+    
+
+{% block content %}
+    <section id="body-toggle">
+            <div class="item">
+                
+            <main class="main-section py-3">
+
+                <div class="item main-grid">
+
+                    <div class="item main container">
+
+                        <div class="col-sm-12 col-md-12 py-1">
+                            <div class="card shadow p-3 mb-1 bg-white rounded scards">
+                                <div class="card-body ">
+                                    <h5 class="card-title">1/26/2021</h5>
+                                    <p class="card-text">Day shift</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="material-grid col-sm-12 col-md-8 py-1">
+                                <div class="item col-sm-12 col-md-12 py-1 ">
+                                    <div class="card shadow p-3 mb-1 bg-white rounded">
+                                        <h4>Material</h4>
+                                        <table class="table mobile-optimised 
+                                        material-table">
+                                        <thead>
+                                        <tr >
+                                            <!-- <th scope="col" class="major">Details</th> -->
+                                            <th scope="col" class="minor">Details</th>
+                                            <th scope="col" class="minor">Bond</th>
+                                            <th scope="col" class="minor">Transferred today</th>
+                                            <th scope="col" class="minor">Production</th>
+                                            <th scope="col" class="minor">Total</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for material in inventory_report %}
+                                                <tr id="{{material.id}}" class="main-table-row complete row-body">
+                                
+                                                    <td class="major" data-th="Details:">
+                                                        G<span class='coilGauge'>{{material.coil_gauge}}</span> 
+                                                        <span class='coilColour'>{{material.coil_colour}}</span> 
+                                                        <span class='coilFinish'>{{material.coil_finish}}</span> 
+                                                        <span class='coilWidth'>{{material.coil_width}}</span>
+                                                    </td>
+                        
+                                                    <td class="major" data-th="Details:">
+                                                        {{material.bond}}
+                                                    </td>
+                        
+                                                    <td class="major" data-th="Details:">
+                                                        {{material.transferred}}
+                                                    </td>
+                        
+                                                    <td class="major" data-th="Details:">
+                                                        {{material.production}}
+                                                    </td>
+                                                    <td class="major" data-th="Details:">
+                                                        {{material.total}}
+                                                    </td>
+                                                </tr>                      
+                                            {% endfor %} 
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                </div>
+                                <div class="item col-sm-12 col-md-12 py-1 ">
+                                    <div class="card shadow p-3 mb-1 bg-white rounded">
+                                        <h4>Orders</h4>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Order number</th>
+                                                    <th scope="col">Profile</th>
+                                                    <th scope="col">Details</th>
+                                                    <th scope="col">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for order in orders_report %}
+                                                    <tr>
+                                                        <th scope="row">{{order.order_number}}</th>
+                                                        <td>{{order.profile}}</td>
+                                                        <td>G{{order.order_gauge}} {{order.order_colour}} 
+                                                            {{order.order_finish}} {{order.order_width}}</td>
+                                                        <td>
+                                                            {% if order.order_completed == "False" %}
+                                                                Incomplete
+                                                            {% else %}
+                                                                Complete
+                                                            {% endif %}
+                                                        </td>
+                                                    </tr>                                                    
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="item col-sm-12 col-md-12 py-1 ">
+                                    <div class="card shadow p-3 mb-1 bg-white rounded">
+                                        <h4>Standard</h4>
+                                        <table class="table">
+                                            <thead>
+                                              <tr>
+                                                <th scope="col">Profile</th>
+                                                <th scope="col">Details</th>
+                                                <th scope="col">Produced</th>
+                                                <th scope="col">Transferred</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <tr>
+                                                {% for standard in standard_report %}
+                                                    <th scope="row">{{standard.order__profile}}</th>
+                                                    <td>G{{standard.order__order_gauge}} 
+                                                        {{standard.order__order_colour}} 
+                                                        {{standard.order__order_finish}} 
+                                                        {{standard.order__order_width}}</td>
+                                                    <td>{{standard.pieces}}</td>
+                                                    <td>{{standard.transferred_pieces_sum}}</td>                                                      
+                                                {% endfor %}
+                                              </tr>
+                                              
+                                            </tbody>
+                                          </table>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-sm-12 col-md-4 py-1 ">
+                                <div class="card shadow p-3 mb-1 bg-white rounded">
+                                    <h3>Capacity report</h3>
+                                    {% for machine in capacity_report %}
+                                        <div class="card-body ">
+                                            <div class="row">
+                                                <div class="item col-7">
+                                                    <h5 class="card-title">{{machine.machine.machine_name}} 
+                                                        {{machine.machine.machine_number}}</h5> 
+                                                </div>
+                                                <div class="item col-5 percentage">
+                                                    <p>{% widthratio machine.percentage 1 100 %}%</p>                                        
+                                                </div>
+                                            </div>  
+                                        </div>                                       
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>  
+                    </div>
+                </div>
+
+            </main>
+
+            </div>
+        </div>
+    </section>
+{% endblock  %}
+    

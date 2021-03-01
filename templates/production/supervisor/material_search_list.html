@@ -1,0 +1,170 @@
+{% extends 'with_sidebar.html' %}
+{% load static %}
+
+
+{% block title %}Production Records{% endblock  %}
+
+
+{% block css_static %}  
+    <link rel="stylesheet" href="{% static 'production/css/planner.css' %}">    
+{% endblock  %}
+
+
+{% block content %}
+    
+        
+    <header  class="py-5 row">
+        <div class="col-md-8">
+            <h3>Production date: {{production_date}}</h3>
+
+        </div>
+        <div class="col-md-3">
+            <form class="d-flex" method="POST" action="{% url 'production:finished_goods_search' %}">
+                {% csrf_token %}
+                <input class="form-control me-2" type="date" value="{{production_date}}"
+                    placeholder="Search" aria-label="Search" name="production_date" required>
+                <button class="btn btn-primary searchBtn" type="submit">Search</button>
+            </form>
+        </div>
+    </header>
+    
+    
+    {% if standard_list %}
+    <header  class="py-5">
+        <h3>Standard material</h3>
+    </header>
+
+        <div class="wrapper ">
+            <div id="tableView" class="main-table  py-4">
+                <table class="table mobile-optimised shadow p-3 mb-5 bg-white rounded material-table">
+                    <thead>
+                    <tr >
+                        <th scope="col" class="major">Profile</th>
+                        <th scope="col" class="minor">Details</th>
+                        <th scope="col" class="minor">Type</th>
+                        <th scope="col" class="minor">Coil Number</th>
+                        <th scope="col" class="minor">Initial Mass</th>
+                        <th scope="col" class="minor">Final Mass</th>
+                        <th scope="col" class="minor">Piece length</th>
+                        <th scope="col" class="minor">Prime pieces</th>
+                        <th scope="col" class="minor">Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for material in standard_list %}
+                            <tr id="{{material.id}}" class="main-table-row complete row-body">
+                                <td class="major"  data-th="Profile">
+                                    <a href="{% url 'production:edit-material-page' material.order.id %}">
+                                        <span class="title">{{material.order.profile}}</span> 
+                                        <span class="icon" id="detailsId"><i class="fas fa-chevron-circle-down"></i></span>
+                                    </a>
+                                </td>
+            
+                                <td class="major" data-th="Details:">
+                                    G{{material.order.order_gauge}} {{material.order.order_colour}} 
+                                    {{material.order.order_finish}} {{material.order.order_width}}
+                                </td>
+
+                                <td class="minor"  data-th="Type:">{{material.order.order_number}} </td>
+            
+                                <td class="minor" data-th="Coil number:">{{material.coil.coil_number}}</td>
+                                <td class="minor" data-th="Initial mass:">{{material.coil.initial_mass}}</td>
+                                <td class="minor" data-th="Final mass:">{{material.coil.final_mass}}</td>
+            
+                                <td class="minor" data-th="Piece length:">{{material.piece_length}}</td>
+                                <td class="minor" data-th="Prime pieces:">{{material.prime_pieces}}</td>
+                                <td class="minor" data-th="Status:">
+                                    
+                                    {% if material.status == "Not Transferred" %}
+                                        <a href="{% url 'production:transfer_material' material.id %}">
+                                            <button type="button" class="btn btn-primary tranferMaterial col-md-12">
+                                                Transfer
+                                            </button>
+                                        </a>
+                                    {% else %}
+                                        <a href="{% url 'production:reverse_transfer' material.id %}">
+                                            <button type="button" class="btn btn-secondary reverseTransfer col-md-12" >
+                                                Reverse Transfer
+                                            </button>
+                                        </a>                                  
+                                    {% endif %}
+                                </td>
+                            </tr>                      
+                        {% endfor %} 
+                    </tbody>
+                </table>
+            </div>
+        </div> 
+    {% endif %}
+        
+
+    
+    {% if orders_list %}
+        <h4>
+            <h3>Orders</h3>
+        </h4>
+        <div class="wrapper ">
+            <div id="tableView" class="main-table  py-4">
+                <table class="table mobile-optimised shadow p-3 mb-5 bg-white rounded material-table">
+                    <thead>
+                      <tr >
+                        <th scope="col" class="major">Profile</th>
+                        <th scope="col" class="major">Order Number</th>
+                        <th scope="col" class="minor">Details</th>
+                        <th scope="col" class="minor">Tonage</th>
+                        <th scope="col" class="minor">Status</th>
+                        <th scope="col" class="minor">Options</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders_list %}
+                            <tr class="main-table-row complete row-body">
+                                <td class="major"  data-th="Profile">
+                                    <a href="{% url 'production:edit-order-page' order.id %}">
+                                        <span class="title">{{order.profile}}</span> 
+                                        <span class="icon" id="detailsId"><i class="fas fa-chevron-circle-down"></i></span>
+                                    </a>
+                                </td>
+                                <td class="minor"  data-th="Order Number:">{{order.order_number}} </td>
+            
+                                <td class="major" data-th="Details:">
+                                    G{{order.order_gauge}} {{order.order_colour}} 
+                                    {{order.order_finish}} {{order.order_width}}
+                                </td>
+                                <td class="minor"  data-th="Order Tonage:">{{order.order_tonage}} </td>
+
+                                <td class="minor" data-th="Total Production:">
+                                    {% if order.order_completed %}
+                                        Completed
+                                    {% else %}
+                                        Incomplete
+                                    {% endif %}
+                                </td>
+                                <td class="minor" data-th="Not Transferred:">
+                                    {% if order.order_completed %}
+                                        <a href="{% url 'production:transfer_order' order.id %}">
+                                            <button type="button" class="btn btn-primary tranferMaterial col-md-12">
+                                                Transfer
+                                            </button>
+                                        </a>
+                                    {% else %}
+                                        Can't Transfer
+                                    {% endif %}
+                                </td>
+                            </tr>                      
+                        {% endfor %} 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+    {% endif %}
+        
+        
+{% endblock  %}
+
+
+{% block javascript_block %}
+  <script type="text/javascript" src="{% static 'production/js/standard_material_list.js' %}"></script> 
+{% endblock  %}
+    

@@ -1,0 +1,27 @@
+body {
+    background-color: rgba(2, 56, 172, 0.753);
+}
+ 
+.container {
+    /* width: 95%; */
+    height: 98vh;
+    /* background-color: rgba(255, 255, 255, 1); */
+    justify-content: center;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+    border-radius: 5px;;
+}
+
+.container #Form1, .container #Form2, .container #Form3 {
+    /* width: 45%; */
+    position: absolute;
+    justify-content: center;
+    /* position the top  edge of the element at the middle of the parent */
+    left: 30%;
+    /* margin:0 auto; */
+
+}
+
+#Form2, #Form3 {
+    visibility: hidden;
+}

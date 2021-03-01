@@ -1,0 +1,81 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <link rel="stylesheet" href="{% static 'main/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap-5.0.0-beta1-dist/css/bootstrap.min.css' %}">
+    <script src="https://kit.fontawesome.com/e43d3b31b1.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/with_sidebar.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/modal_alerts.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/tables.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/buttons.css' %}">
+
+
+	<!-- <link rel="stylesheet" type="text/css" href="{% static 'production/css/grid.css' %}"> -->
+    <title>
+        UBL | {% block title %}{% endblock  %}
+    </title>
+
+    
+
+    
+    {% block css_static %}
+        
+    {% endblock  %}
+
+    
+
+        
+        
+</head>
+<body>
+    {% include 'partials/_navbar.html' %}
+
+    <section id="body-toggle">
+        <div class="grid">
+            <div class="item sidebar-item">
+                {% include 'partials/_sidebar.html' %}
+            </div>
+
+            <div class="item">
+                <div class="container">
+                    {% block content %} {% endblock  %}
+                </div>
+            </div>
+
+        </div>
+    </section>
+    
+    {% include 'partials/_footer.html' %}
+<!-- 
+    <footer class="page-footer font-small bg-light nav-style">
+        <div class="footer-copyright text-center py-4">© 2020 Copyright:
+            <a href="https://ugandabaati.com/"> ugandabaati.com</a>
+        </div>
+    </footer> -->
+
+    <script src="{% static 'main/js/jquery/jquery-3.5.1.min.js' %}" ></script>
+    <script src="{% static 'main/js/bootstrap/bootstrap.bundle.min.js' %}" ></script>
+    <script src="{% static 'bootstrap-5.0.0-beta1-dist/js/bootstrap.bundle.min.js' %}" ></script>
+
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+   
+
+
+    <!-- <script type="text/javascript" src="{% static 'production/js/productionFormFrontEnd.js' %}"></script> -->
+    <!-- <script type="text/javascript" src="{% static 'production/js/productionFormAjax.js' %}"></script> -->
+    <script type="text/javascript" src="{% static 'main/js/main.js' %}"></script>
+    <script type="text/javascript" src="{% static 'main/js/with_sidebar.js' %}"></script>
+
+    {% block javascript_block %}
+    {% endblock  %}
+	
+</body>
+</html>

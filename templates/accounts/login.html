@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block title %}Login{% endblock  %}
+{% block css_static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'accounts/css/login.css' %}">
+{% endblock  %}
+
+{% block content %}
+        
+    <div class="grid"> 
+                
+
+
+        <div class="item align-middle" id="right">
+            <div class="form py-5">
+                <form  class="was-validated" action="{% url 'accounts:login' %}" method='POST'>
+                    {% csrf_token %}
+                    <div class="mb-5" id="login-title">
+                        <h1>Login</h1>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="exampleInputUsername" class="form-label">
+                            Username
+                        </label>
+                        <input type="text" class="form-control btn-lg"
+                            id="exampleInputUsername" aria-describedby="emailHelp"
+                            name="username">
+                    </div>
+
+                    <div class="mb-5">
+                        <label for="exampleInputPassword1" class="form-label">
+                            Password
+                        </label>
+                        <input type="password" class="form-control btn-lg" 
+                            id="exampleInputPassword1" name="password">
+                        <p id="forgot-password"> Forgot password?</p>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        Login
+                    </button>
+
+                </form>
+            </div>
+
+        </div>
+        <div class="item" id="left">
+            
+        </div>
+
+
+    </div>
+{% endblock  %}

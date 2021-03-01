@@ -1,0 +1,179 @@
+:root {
+    --ubl-blue: rgba(15,50,84,1);
+    --ubl-orange: rgba(255, 20, 0, 1);
+    --ubl-white: rgba(255, 255, 255, 1);
+
+    --ubl-excellent: rgba(37, 184, 17, 0.986);
+    --ubl-fair: rgba(255,163,0,0.8);
+    --ubl-poor: rgb(221, 17, 17);
+
+    --ubl-black: rgb(0, 0, 0, 1);
+
+}
+
+
+.main-table{
+    border-collapse: collapse;
+}
+
+.main-table thead th {
+    background-color: rgba(15,50,84,1) !important;
+    /* color: rgba(255,80,0,1); */
+    color: rgba(255, 255, 255, 1);
+    
+}
+
+/* .main-table th, .main-table td {
+    vertical-align: top;
+    text-align: left;
+} */
+/* BREAK TABLE */
+@media screen and (max-width: 710px){
+    table.mobile-optimised {
+        word-wrap: break-word;
+        font-size: 1rem;
+        border: none;
+    }
+
+    table.mobile-optimised thead {
+        display: none;
+    }
+    
+    table.mobile-optimised td {
+        display: block;
+        float: left; 
+        width: 100%;
+        clear: both;
+        background: rgba(2, 2, 255, 0.1);
+        border: none;
+        padding: 0.4rem 0.2rem;
+        box-sizing: border-box;
+        font-size: 1rem;
+      }
+
+    table.mobile-optimised tbody, table.mobile-optimised tr {
+        display: block;
+    }
+
+    .mobile-optimised td:before {
+        content: attr(data-th);
+        display: block;
+        font-weight: bold;
+        margin: 0 0 0.1em;
+        background:  rgba(15,50,84,1);
+        color: #fff;
+        padding: 0.5em;
+      }
+    
+    .mobile-optimised tbody tr {
+        border: solid 1px rgba(255,80,0,1) !important;
+        overflow: hidden;
+        margin-bottom: 1em;
+    }
+/* 
+    .main-table tbody tr:nth-child(odd) td {
+        background: #ccc;
+      } */
+    .main-table tbody tr button {
+        width: 40%;
+    }
+    
+}
+
+.incomplete {
+    background-color: rgba(255,255,0, 0.5);
+}
+
+.complete {
+    background-color: rgba(2,255,0,0.5);
+}
+
+.pending {
+    background-color: rgba(255,0,0,0.5);
+}
+
+.add-new button, .submit-button {
+    background-color: rgba(255,20,0,0.8);
+    border: solid 1px rgba(255,80,0,1);
+}
+
+.edit {
+    background-color: rgba(15,50,84,1);
+}
+
+.machine-title {
+    text-align: center;
+    background-color: rgba(255,20,0,0.8) !important;
+    color: rgba(255, 255, 255, 1);
+}
+
+.add-new button:hover, .submit-button:hover {
+    background-color: rgba(15,50,84,1) !important;
+    text-decoration: none;
+
+}
+a:hover {
+    text-decoration: none;
+
+}
+
+.edit:hover {
+    background-color: rgba(255,20,0,0.8) !important;
+    text-decoration: none;
+
+}
+/* 
+div .search-form {
+    background-color: rgba(15,50,84,1) !important;
+    color: rgba(255, 255, 255, 1);
+} */
+
+
+
+#deleteOrderForm .modal-header {
+    background-color: rgba(255,20,0,1);
+    /* background-color: rgba(15,50,84,1); */
+    color: rgba(255, 255, 255, 1);    
+
+}
+
+#deleteOrderForm .modal-content{
+    border: solid 5px rgba(255,20,0, 1) !important;
+    font-weight: bold;
+    border-radius: 0.6em;
+}
+
+/* .productionPercentage{
+    font-size: 1em;
+} */
+
+.producedTonageCol .excellent {
+    background-color: var(--ubl-excellent) !important;
+    color: var(--ubl-white);
+}
+
+.producedTonageCol .fair {
+    background-color: var(--ubl-fair) !important;
+    color: var(--ubl-white);
+
+}
+
+
+.producedTonageCol .poor {
+    background-color: var(--ubl-poor) !important;
+    color: var(--ubl-white);
+
+}
+
+
+td .edit-link {
+    text-decoration: none;
+    color: var(--ubl-black) !important;
+}
+
+.orderNumber:hover, td .edit-link:hover, tbody tr:hover {
+    /* font-weight: bold; */
+    transition: 0.3s;
+    background-color: var(--ubl-white);
+    
+}

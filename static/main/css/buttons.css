@@ -1,0 +1,15 @@
+
+.createPlan, .editPlan, .searchBtn {
+    background-color: var(--ubl-blue);
+    border: solid 1px var(--ubl-blue);
+}
+
+.createPlan:hover, .editPlan:hover, .searchBtn:hover {
+    background-color: var(--ubl-orange);
+    border: solid 1px var(--ubl-orange);
+}
+
+
+.title:hover {
+    cursor: pointer;
+}

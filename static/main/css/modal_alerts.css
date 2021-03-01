@@ -1,0 +1,68 @@
+:root {
+    --ubl-blue: rgba(15,50,84,1);
+    --ubl-orange: rgba(255, 20, 0, 0.8);
+    --ubl-white: rgba(255, 255, 255, 1);
+
+    --ubl-excellent: rgba(37, 184, 17, 0.986);
+    --ubl-fair: rgba(255,163,0,0.8);
+    --ubl-poor: rgb(221, 17, 17);
+
+    --ubl-black: rgb(0, 0, 0, 1);
+
+}
+
+.createModalForm .modal-content{
+    border: solid 5px var(--ubl-black);
+    border-radius: 0.6em;
+}
+
+.createModalForm .modal-header, .createModalForm .modal-footer {
+    /* background-color: rgba(255,20,0,0.8); */
+    background-color: var(--ubl-black);
+    color: rgba(255, 255, 255, 1);    
+}
+
+ .btn-close, .btn-close:hovers{
+    background-color: var(--ubl-white);
+}
+
+
+.editModalForm .modal-content{
+    border: solid 5px rgba(15,50,84,1);
+    border-radius: 0.6em;
+}
+
+.editModalForm .modal-header, .editModalForm .modal-footer {
+    /* background-color: rgba(255,20,0,0.8); */
+    background-color: rgba(15,50,84,1);
+    color: rgba(255, 255, 255, 1);    
+
+}
+
+
+.transferModalForm .modal-content{
+    border: solid 5px var(--ubl-excellent);
+    border-radius: 0.6em;
+    font-weight: bold;
+}
+
+.transferModalForm .modal-header{
+    background-color: var(--ubl-excellent);
+    color: rgba(255, 255, 255, 1);    
+}
+
+
+
+.deleteModalForm .modal-header {
+    background-color: rgba(255,20,0,1);
+    /* background-color: rgba(15,50,84,1); */
+    color: rgba(255, 255, 255, 1);    
+
+}
+
+
+.deleteModalForm .modal-content{
+    border: solid 5px rgba(255,20,0, 1) !important;
+    font-weight: bold;
+    border-radius: 0.6em;
+}
