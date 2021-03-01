@@ -1,0 +1,1 @@
+web: gunicorn ubl_system.wsgi
