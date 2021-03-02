@@ -198,6 +198,44 @@
     </div>
   </div>
         
+  
+  <div class="wrapper ">
+    <h3>Production plan</h3>
+    <div id="tableView" class="main-table  py-4">
+        <table class="table shadow p-3 mb-5 bg-white rounded">
+            <thead>
+              <tr >
+                <th scope="col">Name</th>
+                <th scope="col">Details</th>
+                <th scope="col">Tonage</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for plan in production_plan %}
+                <tr id={{plan.id}} >
+                  <td class="major orderNumber"  data-th="Name">
+                      {{plan.machine.machine_name}}
+                  </td>
+
+                  <td class="minor" data-th="Details">
+                    G{{plan.gauge}} 
+                    {{plan.colour}} 
+                    {{plan.finish}} 
+                    {{plan.width}}
+                  </td>
+
+                  <td class="minor" data-th="Tonage">{{plan.tonage}}</td>
+
+
+                </tr>           
+              {% endfor %}
+
+            </tbody>
+          </table>
+    </div>
+  </div>
+
+
   <!-- Modal Delete Alert-->
   <div class="modal fade" id="deleteOrderForm" data-bs-backdrop="static" 
     data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" 

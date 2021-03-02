@@ -94,8 +94,8 @@
 						<select class="custom-select" name="profile" 
 							id="profileValdation" required>
 							<option value="">profile</option>
-							{% for key,value in profile %}
-								<option value="{{key}}">{{value}}</option>								
+							{% for profile in profiles %}
+								<option value="{{profile.profile}}">{{profile.profile}}</option>								
 							{% endfor %}
 						</select>
 					</div>

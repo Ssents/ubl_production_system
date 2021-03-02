@@ -10,10 +10,10 @@ import datetime
 class Profile_machines_matching(models.Model):
     profile = models.CharField(max_length=50, 
                                 choices=PROFILE_CHOICES)
-    producing_machine  = models.ForeignKey(Machine, on_delete=models.DO_NOTHING)
+    machine  = models.ForeignKey(Machine, on_delete=models.DO_NOTHING)
 
     class Meta:
-        ordering = ['producing_machine']
+        ordering = ['machine']
     
     def __str__(self):
         return self.profile

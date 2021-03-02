@@ -6,7 +6,7 @@ from maintenance.views import machine, shift_func
 from maintenance.models import Machine
 from production.models import (Order, Piece, Cut_Material, Performance, MaterialRequest, 
                                 ProductionPlan, ManpowerPlan, MaterialRequest)
-from quality.models import Coil_parameters, Coil_description, Reconsiliation
+from quality.models import Coil_parameters, Coil_description, Reconsiliation, Profile_machines_matching
 from supply_chain.models import Coil
 from supply_chain.views import material_report
 
@@ -41,9 +41,10 @@ import calendar
 @allowed_users(allowed_roles=['Operator', 'Admin', 'Supervisor'])
 def create_order_page(request, machine_id):
     machinery = get_object_or_404(Machine, pk=machine_id)
+    profile = Profile_machines_matching.objects.filter(machine=machinery)
     context = {
                 'machinery': machinery, 
-                'profile':PROFILE_CHOICES,
+                'profiles': profile,
                 'colours':ORDER_COLOUR_CHOICES,
                 'finish': ORDER_FINISH_CHOICES,
                 'bond':PRODUCTION_BOND_CHOICES,

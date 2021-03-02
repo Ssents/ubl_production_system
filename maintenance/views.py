@@ -7,7 +7,7 @@ from frontend_choices import (PRODUCTION_BOND_CHOICES, PRODUCTION_TYPE_CHOICES,
                                 ORDER_FINISH_CHOICES, ORDER_GAUGE_CHOICES,
                                  ORDER_WIDTH_CHOICES)
 from maintenance.models import Machine
-from production.models import Order, Cut_Material, Piece, Performance
+from production.models import Order, Cut_Material, Piece, Performance, ProductionPlan
 
 from django.db.models import Count, F, Value, Sum, FloatField
 from production.decorators import allowed_users
@@ -67,6 +67,8 @@ def machine(request, machine_id):
         total_tonage = 0
 
     machine_capacity(machinery, date_today.date() , shift, total_tonage)
+    production_plan = ProductionPlan.objects.filter(shift=shift, 
+                                                    date=date_today.date(), machine=machinery)
 
 
     context = {
@@ -83,6 +85,7 @@ def machine(request, machine_id):
         'date': date_today.date(),
         'total_tonage': total_tonage,
         'machine_target': machine_target,
+        'production_plan': production_plan,
     }
 
     return render(request, 'production/dashboard.html', context)

@@ -6,11 +6,11 @@ from quality.models import (Profile_machines_matching, Coil_parameters, Reconsil
 
 
 class Profile_machines_matchingAdmin(admin.ModelAdmin):
-    list_display = ('id', 'profile', 'producing_machine')
+    list_display = ('id', 'profile', 'machine')
     list_display_links = ('id', 'profile')
-    list_filter = ('profile', 'producing_machine')
+    list_filter = ('profile', 'machine')
     # list_editable = ('is_published',)
-    search_fields = ('id', 'profile', 'producing_machine')
+    search_fields = ('id', 'profile', 'machine')
     list_per_page = 25
 
 admin.site.register(Profile_machines_matching, Profile_machines_matchingAdmin)
