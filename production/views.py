@@ -311,8 +311,11 @@ def edit_material(request):
         material.initial_mass = initial_mass
         material.final_mass = final_mass
         material.save()
-        create_reconsiliation(material.coil_number, material.coil_gauge, material.coil_width,
-                            material.coil_colour, material.coil_finish)
+        create_reconsiliation(material_number = material.coil_number, 
+                            material_gauge = material.coil_gauge, 
+                            material_width = material.coil_width,
+                            material_colour = material.coil_colour, 
+                            material_finish = material.coil_finish)  
         order = material.order
         machine = order.machine
         machine_id = machine.id
@@ -391,8 +394,11 @@ def edit_material_ajax(request):
 
     supply_chain_coil.final_mass = final_mass
     supply_chain_coil.save()
-    create_reconsiliation(material.coil_number, material.coil_gauge, material.coil_width,
-                            material.coil_colour, material.coil_finish)    
+    create_reconsiliation(material_number = material.coil_number, 
+                        material_gauge = material.coil_gauge, 
+                        material_width = material.coil_width,
+                        material_colour = material.coil_colour, 
+                        material_finish = material.coil_finish)   
 
     material_data = {
                         'material_id': material.id,
@@ -424,7 +430,11 @@ def delete_material_ajax(request):
 
         update_coil_mass(material)
         create_order_tonage(order)
-        create_reconsiliation(coil_number, coil_gauge, coil_width, coil_colour, coil_finish)
+        create_reconsiliation(material_number = material.coil_number, 
+                    material_gauge = material.coil_gauge, 
+                    material_width = material.coil_width,
+                    material_colour = material.coil_colour, 
+                    material_finish = material.coil_finish)  
         
         data['deleted'] = True
         data['message'] = str(material.coil_number) + ' successfully deleted'
@@ -503,10 +513,16 @@ def create_pieces(request, coil_id, machine_id, order_id):
                                 rejects_running_meters=rejects_running_meters,
                                 total_running_meters= total_running_meters,
                                 prime_tonage= prime_tonage, rejects_tonage=rejects_tonage,
-                                total_tonage= total_tonage, status="Not Transferred",
+                                total_tonage= total_tonage, 
+                                status="Not Transferred",
                                 transferred_pieces=0)
-    create_reconsiliation(coil.coil_number, coil.coil_gauge, coil.coil_width,
-                            coil.coil_colour, coil.coil_finish)
+
+    create_reconsiliation(material_number = coil.coil_number, 
+                            material_gauge = coil.coil_gauge, 
+                            material_width = coil.coil_width,
+                            material_colour = coil.coil_colour, 
+                            material_finish = coil.coil_finish)
+
     create_order_tonage(order)
 
     piece = {
@@ -571,8 +587,11 @@ def update_piece(request):
     
     piece.save()
     create_order_tonage(order)
-    create_reconsiliation(coil.coil_number, coil.coil_gauge, coil.coil_width,
-                            coil.coil_colour, coil.coil_finish)
+    create_reconsiliation(material_number=coil.coil_number, 
+                           material_gauge= coil.coil_gauge, 
+                           material_width = coil.coil_width,
+                           material_colour= coil.coil_colour, 
+                           material_finish= coil.coil_finish)
 
     piece = {
         'piece_id':piece.id,
@@ -614,7 +633,11 @@ def  delete_piece(request):
     order =piece.order
     piece.delete()
     
-    create_reconsiliation(coil_number, coil_gauge, coil_width, coil_colour, coil_finish)
+    create_reconsiliation(material_number = material.coil_number, 
+                    material_gauge = material.coil_gauge, 
+                    material_width = material.coil_width,
+                    material_colour = material.coil_colour, 
+                    material_finish = material.coil_finish)  
     create_order_tonage(order)
     data = {
         'deleted': True
