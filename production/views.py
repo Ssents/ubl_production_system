@@ -523,7 +523,7 @@ def create_pieces(request, coil_id, machine_id, order_id):
                             material_colour = coil.coil_colour, 
                             material_finish = coil.coil_finish)
 
-    create_order_tonage(order)
+    create_order_tonage(order) 
 
     piece = {
             'id':obj.id,
