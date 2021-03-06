@@ -64,9 +64,13 @@ def logout_view(request):
     messages.success(request, ('You have been logged out'))
     return redirect('accounts:login')
 
+@unauthenticated_user
 def profile(request):
     return render(request, "accounts/profile.html")
 
+
+def landing_page(request):
+    return render(request, "accounts/landing_page.html")
 
 
 

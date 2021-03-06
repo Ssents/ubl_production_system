@@ -24,10 +24,12 @@
 
         <div id="tableView" class="main-table  py-4">
             <div class="row py-3">
-                <button type="button" class="btn btn-primary 
-                    addCoil col-md-2" data-bs-toggle="modal" 
-                    data-bs-target="#createCoilForm">Create Coil
-                 </button>
+                <a href="{% url 'supply_chain:dashboard' %}">
+                    <button type="button" class="btn btn-primary 
+                        addCoil col-md-2" data-bs-toggle="modal" 
+                        data-bs-target="#createCoilForm">Transfer coil
+                    </button>
+                </a>
             </div>
             <table class="table mobile-optimised shadow p-3 mb-5 bg-white rounded 
                 material-table">
@@ -53,18 +55,18 @@
                                 <span class='coilWidth'>{{material.coil_width}}</span>
                             </td>
 
-                            <td class="major" data-th="Details:">
+                            <td class="minor" data-th="Bond:">
                                 {{material.bond}}
                             </td>
 
-                            <td class="major" data-th="Details:">
+                            <td class="minor" data-th="Transferred:">
                                 {{material.transferred}}
                             </td>
 
-                            <td class="major" data-th="Details:">
+                            <td class="minor" data-th="Production:">
                                 {{material.production}}
                             </td>
-                            <td class="major" data-th="Details:">
+                            <td class="minor" data-th="Total:">
                                 {{material.total}}
                             </td>
 
