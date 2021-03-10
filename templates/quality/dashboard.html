@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+    Quality Dashboard
+{% endblock  %}
+
+{% block css_static %}
+    <link rel="stylesheet" href="{% static 'quality/css/dashboard.css' %}">
+{% endblock  %}
+
+{% block content %}
+    <h4>Monthly Production</h4>
+    <div class="wrapper ">
+        <div id="tableView" class="main-table  py-4">
+            <table class="table mobile-optimised shadow p-3 mb-5 bg-white rounded material-table">
+                <thead>
+                  <tr >
+                    <th scope="col" class="major">Month</th>
+                    <th scope="col" class="minor">PPAZ Prime</th>
+                    <th scope="col" class="minor">PPAZ Rejects</th>
+                    <th scope="col" class="minor">AZ Prime</th>
+                    <th scope="col" class="minor">AZ Rejects</th>
+                    <th scope="col" class="minor">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for material in monthly_tonage_report %}
+                        <tr class="main-table-row complete row-body">
+                            <td class="major"  data-th="Month">
+                                    <span class="title">{{material.order__shift_date__month}}</span> 
+                            </td>
+    
+
+                            <td class="minor"  data-th="PPAZ Prime:">{{material.ppaz_prime_tonage}} </td>
+        
+                            <td class="minor" data-th="PPAZ Rejects:">{{material.ppaz_rejects_tonage}}</td>
+        
+                            <td class="minor" data-th="AZ Prime:">{{material.az_prime_tonage}}</td>
+                            <td class="minor" data-th="AZ Rejects:">{{material.az_rejects_tonage}}</td>
+                            <td class="minor" data-th="Total:">{{material.total}}</td>
+                        </tr>                      
+                    {% endfor %} 
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <h4>Daily production</h4>
+    <div class="wrapper ">
+        <div id="tableView" class="main-table  py-4">
+            <table class="table mobile-optimised shadow p-3 mb-5 bg-white rounded material-table">
+                <thead>
+                  <tr >
+                    <th scope="col" class="major">Month</th>
+                    <th scope="col" class="major">Date</th>
+                    <th scope="col" class="minor">PPAZ Prime</th>
+                    <th scope="col" class="minor">PPAZ Rejects</th>
+                    <th scope="col" class="minor">AZ Prime</th>
+                    <th scope="col" class="minor">AZ Rejects</th>
+                    <th scope="col" class="minor">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for material in daily_tonage_report %}
+                        <tr class="main-table-row complete row-body">
+                            <td class="major"  data-th="Month">
+                                <span class="title">{{material.order__shift_date__month}}</span> 
+                            </td>
+                            <td class="minor"  data-th="Date">
+                                <span class="title">{{material.order__shift_date__day}}</span> 
+                            </td>    
+
+                            <td class="minor ppaz-prime" data-th="PPAZ Prime:">
+                                {{material.ppaz_prime_tonage}}
+                            </td>
+        
+                            <td class="minor" data-th="PPAZ Rejects:">{{material.ppaz_rejects_tonage}}</td>
+        
+                            <td class="minor" data-th="AZ Prime:">{{material.az_prime_tonage}}</td>
+                            <td class="minor" data-th="AZ Rejects:">{{material.az_rejects_tonage}}</td>
+                            <td class="minor" data-th="Total:">{{material.total}}</td>
+                        </tr>                      
+                    {% endfor %} 
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock  %}
+
+
+    
+
+{% block javascript_block %}
+  <script type="text/javascript" src="{% static 'production/js/order_form.js' %}"></script>
+{% endblock  %}

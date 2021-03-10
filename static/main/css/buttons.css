@@ -1,10 +1,10 @@
 
-.createPlan, .editPlan, .searchBtn {
+.createPlan, .editPlan, .searchBtn, .transferBtn {
     background-color: var(--ubl-blue);
     border: solid 1px var(--ubl-blue);
 }
 
-.createPlan:hover, .editPlan:hover, .searchBtn:hover {
+.createPlan:hover, .editPlan:hover, .searchBtn:hover, .transferBtn:hover {
     background-color: var(--ubl-orange);
     border: solid 1px var(--ubl-orange);
 }

@@ -1319,6 +1319,14 @@ def create_reconsiliation(material_number, material_gauge, material_width,
                                         coil_width = material_width,
                                         coil_colour= material_colour,
                                         coil_finish= material_finish)
+    material_list = Cut_Material.objects.filter(coil_number = material_number,
+                                                    coil_gauge = material_gauge,
+                                                    coil_width = material_width,
+                                                    coil_colour= material_colour,
+                                                    coil_finish= material_finish)
+    start_date = material_list.order_by('order__shift_date')[0].order.shift_date
+    end_date = material_list.order_by('-order__shift_date')[0].order.shift_date
+    
     
     try:
         coil_reconsiliation = Reconsiliation.objects.get(coil_number = material_number,
@@ -1334,11 +1342,7 @@ def create_reconsiliation(material_number, material_gauge, material_width,
         initial_running_meters = supply_chain_coil.initial_running_meters
         # Next, we start the calculations
         # a. List all the cut material that used the coil
-        material_list = Cut_Material.objects.filter(coil_number = material_number,
-                                                    coil_gauge = material_gauge,
-                                                    coil_width = material_width,
-                                                    coil_colour= material_colour,
-                                                    coil_finish= material_finish)
+        
         # b. If material was used, we can get pieces
         produced_mass=0
         produced_running_meters=0
@@ -1369,6 +1373,7 @@ def create_reconsiliation(material_number, material_gauge, material_width,
         coil_reconsiliation.produced_running_meters = produced_running_meters
         coil_reconsiliation.mass_gain = mass_gain
         coil_reconsiliation.running_meters_gain = running_meters_gain
+        coil_reconsiliation.finish_date = end_date
         coil_reconsiliation.save()
         
     except Reconsiliation.DoesNotExist:
@@ -1378,7 +1383,8 @@ def create_reconsiliation(material_number, material_gauge, material_width,
             coil_colour= material_colour, coil_finish= material_finish,
             initial_mass = supply_chain_coil.initial_mass, final_mass=supply_chain_coil.final_mass,
             produced_mass=0, initial_running_meters=supply_chain_coil.initial_running_meters,
-            produced_running_meters=0, mass_gain=0, running_meters_gain=0)
+            produced_running_meters=0, mass_gain=0, running_meters_gain=0,
+            start_date=start_date, finish_date=end_date)
     ## look for tonages in pieces and if they are not there, return zero
     return None
 

@@ -7,6 +7,8 @@ from frontend_choices import (PRODUCTION_TYPE_CHOICES, PROFILE_CHOICES, ORDER_CO
 from frontend_choices import ORDER_GAUGE_CHOICES
 from django.utils.text import  slugify
 from maintenance.models import Machine
+from django.contrib.auth.models import User
+
 
 # Create your models here.
 class Order(models.Model):
@@ -176,3 +178,10 @@ class MaterialRequest(models.Model):
 
     def __str__(self):
         return (str(self.date) + " " + self.colour + " " + self.finish)
+
+class ProdutionTeam(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    designation =models.CharField(max_length=50)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE)
+    

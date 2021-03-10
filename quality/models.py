@@ -54,6 +54,8 @@ class Reconsiliation(models.Model):
     produced_running_meters = models.IntegerField()
     mass_gain = models.IntegerField()
     running_meters_gain = models.IntegerField()
+    start_date = models.DateField()
+    finish_date = models.DateField()
 
     def __str__(self):
         return (self.coil_number) 

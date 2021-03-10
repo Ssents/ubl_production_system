@@ -6,8 +6,3 @@ console.log(date);
 setTimeout(function(){
     $('#message').fadeOut('slow');
     }, 3000);
-
-$('.datepicker').datetimepicker({
-    dateFormat: "dd-mm-yy", 
-    timeFormat: "HH:mm:ss"
-});
