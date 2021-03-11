@@ -9,6 +9,7 @@ from .models import Coil_description, Reconsiliation
 import datetime
 
 class ProductionReports(View):
+    template_name = None
     ppaz_colours = Coil_description.objects.filter(
                                                         coil_type="PPAZ"
                                                     ).values_list("coil_colour")
@@ -17,7 +18,8 @@ class ProductionReports(View):
                                                 ).values_list("coil_colour")
     today_month = datetime.datetime.now().month
 
-    def get_monthly_report(self, month=today_month):
+    def get_monthly_report(self):
+        month=self.today_month
         monthly_production_tonage = Piece.objects.filter(order__shift_date__year = datetime.datetime.now().year
             ).values('order__shift_date__month'
             ).order_by('order__shift_date__month').annotate(
@@ -71,8 +73,7 @@ class ProductionReports(View):
         }
         return context
      
-    def get_reconsiliation_report(self):
-        month = self.today_month
+    def get_reconsiliation_report(self,month=today_month):
         monthly_reconsiliation = Reconsiliation.objects.filter(start_date__month=month).values()
         return monthly_reconsiliation
 

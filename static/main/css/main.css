@@ -1,7 +1,26 @@
-a {
-    text-decoration: none;
-    color: rgba(255, 255, 255, 1) !important;
+:root {
+    --ubl-blue: rgba(15,50,84,1);
+    --ubl-orange: rgba(255, 20, 0, 1);
+    --ubl-white: rgba(255, 255, 255, 1); 
+    --ubl-black: rgba(0,0,0,1);
+}
 
+table a, table a:hover {
+    text-decoration: none;
+    color: var(--ubl-black) !important;
+}
+
+
+nav a, nav a:hover {
+    text-decoration: none;
+    color: var(--ubl-white) !important;
+}
+
+
+
+.collapse .navbar-nav a:hover {
+    background-color: var(--ubl-orange) !important;
+    color: var(--ubl-white) !important;
 }
 
 .navbar-custom, .dropdown-menu, .footer {

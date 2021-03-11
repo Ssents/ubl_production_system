@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+    Reconsiliation
+{% endblock  %}
+    
+
+
+{% block content %}
+
+        <h4>Monthly Reconsiliation Report</h4>
+        <div class="wrapper ">
+            <div id="tableView" class="main-table  py-4">
+                <table class="table mobile-optimised shadow p-3 mb-5 bg-white rounded material-table">
+                    <thead>
+                    <tr >
+                        <th scope="col" class="major">Coil Number</th>
+                        <th scope="col" class="minor">Details</th>
+                        <th scope="col" class="minor">Initial Mass</th>
+                        <th scope="col" class="minor">Final Mass</th>
+                        <th scope="col" class="minor">Supplier Meters</th>
+                        <th scope="col" class="minor">Production Meters</th>
+                        <th scope="col" class="minor">Meters Gain</th>
+                        <th scope="col" class="minor">Mass Gain</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for coil in monthly_reconsiliation_list %}
+                            <tr class="main-table-row complete row-body">
+                                <td class="major"  data-th="Coil Number">
+                                    <a href="{% url 'quality:reconsiliation_detail' coil.id %}">
+                                        <span class="title">{{coil.coil_number}}</span> 
+                                    </a>
+                                </td>
+                                <td class="major" data-th="Details:">
+                                    G{{coil.coil_gauge}} {{coil.coil_colour}} 
+                                    {{coil.coil_finish}} {{coil.coil_width}}
+                                </td>
+        
+
+                                <td class="minor"  data-th="Initial Mass:">{{coil.initial_mass}} </td>
+                                <td class="minor"  data-th="Final Mass:">{{coil.final_mass}} </td>
+            
+                                <td class="minor" data-th="Supplier meters:">{{coil.initial_running_meters}}</td>
+            
+                                <td class="minor" data-th="Produced meters:">{{coil.produced_running_meters}}</td>
+                                <td class="minor" data-th="Meters gain:">{{coil.running_meters_gain}}</td>
+                                <td class="minor" data-th="Total:">{{coil.mass_gain}}</td>
+                            </tr>                      
+                        {% endfor %} 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+{% endblock  %}
+    
