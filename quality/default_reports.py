@@ -6,7 +6,10 @@ from django.db.models import (Count, F, Q, Value, Sum, FloatField, Min, Max, Dec
 from production.models import Piece
 from .models import Coil_description, Reconsiliation
 
+from frontend_choices import MONTH_LIST_CHOICES, YEAR_LIST_CHOICES
+
 import datetime
+import calendar
 
 class ProductionReports(View):
     template_name = None
@@ -18,8 +21,7 @@ class ProductionReports(View):
                                                 ).values_list("coil_colour")
     today_month = datetime.datetime.now().month
 
-    def get_monthly_report(self):
-        month=self.today_month
+    def get_monthly_report(self, month=datetime.datetime.now().month):
         monthly_production_tonage = Piece.objects.filter(order__shift_date__year = datetime.datetime.now().year
             ).values('order__shift_date__month'
             ).order_by('order__shift_date__month').annotate(
@@ -39,9 +41,10 @@ class ProductionReports(View):
                     )
         return monthly_production_tonage
 
-    def get_daily_report(self):
-        month = datetime.datetime.now().month
-        daily_tonage_report = Piece.objects.filter(order__shift_date__month= month
+    def get_daily_report(self, month = datetime.datetime.now().month,
+        year=datetime.datetime.now().year):
+        daily_tonage_report = Piece.objects.filter(order__shift_date__month= month,
+            order__shift_date__year = year
             ).values('order__shift_date__month', 'order__shift_date__day'
             ).order_by(
                 'order__shift_date__day'
@@ -69,12 +72,17 @@ class ProductionReports(View):
             "monthly_tonage_report": self.get_monthly_report(),
             "date": datetime.datetime.now().date(),
             "daily_tonage_report": self.get_daily_report(),
-            "reconsiliation": self.get_reconsiliation_report(),
+            "reconsiliation_detail": self.get_reconsiliation_report(),
+            "years_list": YEAR_LIST_CHOICES,
+            "months_list": MONTH_LIST_CHOICES,
+            "year": datetime.datetime.now().year,
+            "month": calendar.month_abbr[datetime.datetime.now().month],
         }
         return context
      
-    def get_reconsiliation_report(self,month=today_month):
-        monthly_reconsiliation = Reconsiliation.objects.filter(start_date__month=month).values()
+    def get_reconsiliation_report(self,month=today_month, year=datetime.datetime.now().year):
+        monthly_reconsiliation = Reconsiliation.objects.filter(
+            finish_date__month=month, finish_date__year=year).values()
         return monthly_reconsiliation
 
 

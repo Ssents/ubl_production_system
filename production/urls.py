@@ -67,5 +67,5 @@ urlpatterns = [
     #search paths
     path('production-search/', views.finished_goods_search, name="finished_goods_search"),
     path('manpower-search/', views.manpower_search_list, name="manpower_search"),
-
+    path('performance-list/', views.PerformanceListView.as_view(), name="performance_list")
 ]

@@ -11,6 +11,49 @@
 {% block content %}
 
         <h4>Monthly Reconsiliation Report</h4>
+        <header  class=" row">
+            <div class="col-md-7">
+                <h5>{{month}} {{year}}</h5>
+            </div>
+            <div class="col-md-5">
+                <form class="d-flex" method="POST" action="{% url 'quality:reconsiliation_search' %}">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-4">
+                            <select class="custom-select" name="search_month" 
+                                id="month" required>
+                                <option value="">month</option>
+                                {% for key, value in months_list %}
+                                    {% if value == month %}
+                                        <option value="{{key}}" selected>{{value}}</option>
+                                    {% else %}
+                                        <option value="{{key}}">{{value}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="custom-select col-12" name="search_year" 
+                                id="year" required>
+                                <option value="">year</option>
+                                {% for year_value in years_list %}
+                                    {% if year_value == year %}
+                                        <option value="{{year_value}}" selected>{{year_value}}</option>
+                                    {% else %}
+                                        <option value="{{year_value}}">{{year_value}}</option>								
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-primary searchBtn col-12" type="submit">
+                                Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </header>
+
         <div class="wrapper ">
             <div id="tableView" class="main-table  py-4">
                 <table class="table mobile-optimised shadow p-3 mb-5 bg-white rounded material-table">

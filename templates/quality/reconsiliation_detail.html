@@ -6,11 +6,110 @@
 {% block title %}
     Reconsiliation Detail
 {% endblock  %}
+{% block css_static %}
+    <link rel="stylesheet" href="{% static 'quality/css/reconsiliation_detail.css' %}">
+{% endblock  %}
 
 
 
 {% block content %}
-    {{reconsiliation_detail}}
-    {{orders}}
+    <div class="row">
+        <div class="col-md-4">
+            <h5>Coil Details</h5>
+            <div class="wrapper py-4 coil-details-card">
+                <div class="card shadow p-3 mb-5 bg-white rounded col-12 actual-card" >
+                    <div class="card-body">
+                      <div class="card-text">
+                            <div class="row py-1">
+                                <div class="col-5 title">Number: </div>
+                                <div class="col-7">{{reconsiliation_detail.coil_number}} </div>
+                            </div>
+                            <div class="row py-1 " >
+                                <div class="col-5 title">Details: </div>
+                                <div class="col-7">G{{reconsiliation_detail.coil_gauge}} {{reconsiliation_detail.coil_colour}} {{reconsiliation_detail.coil_finish}} 
+                                                    {{reconsiliation_detail.coil_width}}
+                                </div>
+                            </div>
+                            <div class="row py-1">
+                                <div class="col-5 title">Initial mass: </div>
+                                <div class="col-7">{{reconsiliation_detail.initial_mass}} kg</div>
+                            </div>
+                            <div class="row py-1">
+                                <div class="col-5 title" >Final mass: </div>
+                                <div class="col-7">{{reconsiliation_detail.final_mass}} kg</div>
+                            </div>
+                            <div class="row py-1">
+                                <div class="col-5 title" >Produced mass: </div>
+                                <div class="col-7">{{reconsiliation_detail.produced_mass}} kg</div>
+                            </div>
+                            <div class="row py-1">
+                                <div class="col-5 title">Supplier meters: </div>
+                                <div class="col-7">{{reconsiliation_detail.initial_running_meters}} m</div>
+                            </div>
+                            <div class="row py-1">
+                                <div class="col-5 title">Produced meters: </div>
+                                <div class="col-7">{{reconsiliation_detail.produced_running_meters}} m</div>
+                            </div>
+                            <div class="row py-1">
+                                <div class="col-5 title">Meters gain: </div>
+                                <div class="col-7">{{reconsiliation_detail.running_meters_gain}} m</div>
+                            </div>
+                            <div class="row py-1">
+                                <div class="col-5 title">Mass gain: </div>
+                                <div class="col-7">{{reconsiliation_detail.mass_gain}} kg</div>
+                            </div>
+                            
+                      </div>
+                    </div>
+                </div>    
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <h5>Pieces details</h5>
+            <div class="wrapper ">
+                <div id="tableView" class="main-table  py-4">
+                    <table class="table mobile-optimised shadow p-3 mb-5 bg-white rounded material-table">
+                        <thead>
+                          <tr >
+                            <th scope="col" class="major">Date</th>
+                            <th scope="col" class="major">Profile</th>
+                            <th scope="col" class="major">Order Number</th>
+                            <th scope="col" class="minor">Piece Length</th>
+                            <th scope="col" class="minor">Prime Pieces</th>
+                            <th scope="col" class="minor">Rejects Pieces</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            {% for piece in pieces %}
+                                <tr class="main-table-row complete row-body">
+                                    <td class="major"  data-th="Date: ">
+                                        {{piece.order.shift_date}}                                    
+                                    </td>
+                                    <td class="minor"  data-th="Profile: ">
+                                        {{piece.order.profile}}                                    
+                                    </td>
+                                    <td class="minor"  data-th="Order number: ">
+                                        {{piece.order.order_number}}                                    
+                                    </td>
+                                    <td class="minor"  data-th="Piece Length: ">
+                                        {{piece.piece_length}}                                    
+                                    </td>
+                                    <td class="minor"  data-th="Prime pieces: ">
+                                        {{piece.prime_pieces}}                                    
+                                    </td>
+                                    <td class="minor"  data-th="Rejects pieces: ">
+                                        {{piece.reject_pieces}}                                    
+                                    </td>
+                                </tr>                      
+                            {% endfor %} 
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 {% endblock  %}
     

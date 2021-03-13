@@ -11,8 +11,15 @@ table a, table a:hover {
 }
 
 
+
 nav a, nav a:hover {
     text-decoration: none;
+    color: var(--ubl-white) !important;
+}
+
+.secondary-nav-bar li:hover {
+    text-decoration: none;
+    background-color: var(--ubl-orange) !important;
     color: var(--ubl-white) !important;
 }
 

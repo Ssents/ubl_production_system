@@ -12,6 +12,7 @@ from supply_chain.views import material_report
 
 
 from django.db.models.functions import Coalesce
+from django.views import View
 from django.views.generic import (TemplateView, ListView, CreateView, UpdateView,
                                     DeleteView)
 from django.contrib import messages
@@ -1267,9 +1268,26 @@ def create_reconsiliation_1(material):
 
 
 # CLASS BASED VIEWS
+class PerformanceListView(View):
+    template_name = "production/supervisor/performance.html"
 
-class CreateOrderView(CreateView):
-    template_name = "production/order_form copy.html"
+    def get(self, request):
+        performance_list = Performance.objects.filter(date=datetime.datetime.now().date)
+        context = {
+            "performance_list": performance_list,
+            "date": datetime.datetime.now().date
+        }
+        return render(request, self.template_name, context)
+    
+    def post(self, request):
+        if request.method == "POST":
+            search_date = request.POST["seach_date"]
+            context = {
+                "date": search_date,
+                "performance_list": Performance.objects.filter(date=search_date)
+            }
+            return render(request, self.template_name, context)
+            
 
 
 def create_order_tonage(order):

@@ -1,0 +1,19 @@
+:root {
+    --ubl-blue: rgba(15,50,84,1);
+    --ubl-orange: rgba(255, 20, 0, 1);
+    --ubl-white: rgba(255, 255, 255, 1); 
+    --ubl-black: rgba(0,0,0,1);
+}
+
+.coil-details-card {
+    font-weight: 450;
+}
+
+.coil-details-card .title {
+    font-weight: bold;
+    color: var(--ubl-blue);
+}
+
+.coil-details-card .actual-card{
+    border: solid 0.2em var(--ubl-blue);
+}

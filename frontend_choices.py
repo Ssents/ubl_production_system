@@ -99,4 +99,7 @@ PIECE_STATUS_CHOICES = [
 
 months = [month for month in range(1, 13)] 
 MONTH_LIST_CHOICES = [(month, calendar.month_abbr[month]) for month in months]
-DAYS_LIST_CHOICES = [day for day in range(1,32)] 
+DAYS_LIST_CHOICES = [day for day in range(1,32)]
+import datetime
+year_today = datetime.datetime.now().year
+YEAR_LIST_CHOICES = [year for year in range(year_today - 10, year_today + 1)]
