@@ -96,8 +96,8 @@ def create_order(request, machine_id):
 
         order_tonage = 0
         
-        time_now = datetime.datetime.now().time()
-        today = datetime.datetime.now()
+        time_now = timezone.now().time()
+        today = timezone.now()
 
         if time_now > datetime.time(8,0,0,0) and time_now < datetime.time(17, 30, 0, 0):
             shift = "Day"
@@ -701,7 +701,7 @@ def running_meters(request):
 @login_required
 @allowed_users(allowed_roles=['Admin', 'Supervisor'])
 def list_products(request):
-    date = datetime.datetime.now().date()
+    date = timezone.now().date()
     standard_list = Order.objects.filter(production_type__in=["Standard"], 
                                                 shift_date=shift_func()['shift_date'])
 
@@ -720,13 +720,13 @@ def list_products(request):
                                         'order__order_gauge', 'order__order_finish',
                                         'pieces','transferred_pieces_sum','not_transferred')
     
-    orders = Order.objects.filter(shift_date = datetime.datetime.now().date(),
+    orders = Order.objects.filter(shift_date = timezone.now().date(),
                                     production_type="Work Order")
 
 
     context={
         "material_list": report,
-        "production_date":datetime.datetime.now(),
+        "production_date":timezone.now(),
         "orders_list": orders,
     }
     return render(request, 'production/standard_material_list.html', context)
@@ -747,7 +747,7 @@ def finished_goods_search(request):
                         "standard_list": pieces,
                         "orders_list": orders,
                         "production_date": date,
-                        "today": datetime.datetime.now().date(),
+                        "today": timezone.now().date(),
                     }
         return render(request, 'production/supervisor/material_search_list.html', context)
 
@@ -824,11 +824,11 @@ def transfer_order(request, order_id):
 @allowed_users(allowed_roles=['Admin', 'Supervisor'])
 def planer(request):
     machines = Machine.objects.all()
-    plan = ProductionPlan.objects.filter(date__gte=datetime.datetime.now().date()).order_by(
+    plan = ProductionPlan.objects.filter(date__gte=timezone.now().date()).order_by(
         'date', 'shift', 'machine'
     )
     date = ProductionPlan.objects.filter(
-                                            date__gte=datetime.datetime.now().date()
+                                            date__gte=timezone.now().date()
                                         ).values('date').distinct()
     context = {'inventory': material_report_planer()['report'],
                 'colour': ORDER_COLOUR_CHOICES,
@@ -861,7 +861,7 @@ def create_plan(request):
         tonage = request.POST['tonage']
         # tonage = float(int(tonage/1000)
 
-        date = datetime.datetime.now().date()
+        date = timezone.now().date()
         machine = Machine. objects.get(pk=machine_id)
 
         try:
@@ -885,13 +885,13 @@ def create_plan(request):
                 material_request = MaterialRequest.objects.get(colour=colour, 
                                                     finish=finish, gauge=gauge, 
                                                     width=width,
-                                                    date=datetime.datetime.now().date())
+                                                    date=timezone.now().date())
                 material_request.tonage = request_tonage
                 material_request.save()
             except MaterialRequest.DoesNotExist:
                 material_request = MaterialRequest.objects.create(colour=colour, 
                                             finish=finish, gauge=gauge, width=width,
-                                            date=datetime.datetime.now().date(),
+                                            date=timezone.now().date(),
                                             tonage=request_tonage)
 
         plan = ProductionPlan.objects.create(
@@ -928,13 +928,13 @@ def delete_plan(request):
                 material_request = MaterialRequest.objects.get(colour=plan.colour, 
                                                     finish=plan.finish, gauge=plan.gauge, 
                                                     width=plan.width,
-                                                    date=datetime.datetime.now().date())
+                                                    date=timezone.now().date())
                 material_request.tonage = request_tonage
                 material_request.save()
             except MaterialRequest.DoesNotExist:
                 material_request = MaterialRequest.objects.create(colour=plan.colour, 
                                             finish=plan.finish, gauge=plan.gauge, width=plan.width,
-                                            date=datetime.datetime.now().date(),
+                                            date=timezone.now().date(),
                                             tonage=request_tonage)
 
 
@@ -951,7 +951,7 @@ def edit_plan(request):
         order_number = request.POST['order_number']
         tonage = request.POST['tonage']
 
-        date = datetime.datetime.now().date()
+        date = timezone.now().date()
         machine = Machine. objects.get(pk=machine_id)
 
         try:
@@ -988,13 +988,13 @@ def edit_plan(request):
                 material_request = MaterialRequest.objects.get(colour=plan.colour, 
                                                     finish=plan.finish, gauge=plan.gauge, 
                                                     width=plan.width,
-                                                    date=datetime.datetime.now().date())
+                                                    date=timezone.now().date())
                 material_request.tonage = request_tonage
                 material_request.save()
             except MaterialRequest.DoesNotExist:
                 material_request = MaterialRequest.objects.create(colour=plan.colour, 
                                             finish=plan.finish, gauge=plan.gauge, width=plan.width,
-                                            date=datetime.datetime.now().date(),
+                                            date=timezone.now().date(),
                                             tonage=request_tonage)
 
         plan.save()
@@ -1030,11 +1030,11 @@ class ManpowerPlanListView(ListView):
     context_object_name = "manpower_list"
 
     def get_queryset(self):
-        manpower_list = ManpowerPlan.objects.filter(date=datetime.datetime.now().date())
+        manpower_list = ManpowerPlan.objects.filter(date=timezone.now().date())
         return manpower_list
     
     def get_context_data(self, **kwargs):
-        date = datetime.datetime.now().date()
+        date = timezone.now().date()
         context = super().get_context_data(**kwargs)
         context['form'] = ManpowerPlanForm
         context['machines'] = Machine.objects.all()
@@ -1050,11 +1050,7 @@ def manpower_create(request):
     if request.method =="POST":
         machine_id = int(request.POST['machine_id'])
         machine = Machine.objects.get(pk=machine_id)
-        # day = request.POST['day']
-        # month = request.POST['month']
-        # year = datetime.datetime.now().year
         date = request.POST['shift_date']
-        # date = datetime.datetime(year, int(month), int(day)).date()
         shift = request.POST['shift']
         operator = request.POST['operator']
         helpers = int(request.POST['helpers'])
@@ -1142,7 +1138,7 @@ def manpower_search_list(request):
 @login_required
 @allowed_users(allowed_roles=['Admin', 'Supervisor'])
 def material_request_list(request):
-    date = datetime.datetime.now().date()
+    date = timezone.now().date()
     material_list = MaterialRequest.objects.filter(date=date)
     coils = Coil.objects.filter(final_mass__gt=0)
     context = {
@@ -1152,7 +1148,7 @@ def material_request_list(request):
     return render(request,'production/supervisor/material_request_list.html', context)
 
 def material_request_create(colour, finish, gauge, width, requested_tonage=0):
-    date = datetime.datetime.now().date()
+    date = timezone.now().date()
     # get all the planned material from today and onwards
     planned_material = float(ProductionPlan.objects.filter(gauge=gauge, width=width, 
                                             colour=colour, finish=finish,
@@ -1281,7 +1277,7 @@ class PerformanceListView(View):
         performance_list = Performance.objects.filter(date=timezone.now())
         context = {
             "performance_list": performance_list,
-            "date": datetime.datetime.now().date
+            "date": timezone.now().date
         }
         return render(request, self.template_name, context)
     
@@ -1416,7 +1412,7 @@ def create_reconsiliation(material_number, material_gauge, material_width,
 @allowed_users(allowed_roles=['Admin', 'Supervisor'])
 def supervisor_dashboard(request):
     # capacity report
-    today = datetime.datetime.now()
+    today = timezone.now()
     capacity_report = Performance.objects.filter(date=shift_func()['shift_date'], shift=shift_func()['shift'])
     ## orders_report
     orders_report = Order.objects.filter(shift_date=shift_func()['shift_date'], production_type="Work Order")
@@ -1453,7 +1449,7 @@ def list_standard_func(date):
     return report
 
 def material_report_planer():
-    date_today = datetime.datetime.now().date()
+    date_today = timezone.now().date()
     bond = Coil.objects.filter(location="Bond")
     production = Coil.objects.filter(location="Production")
     report = bond|production
@@ -1464,7 +1460,7 @@ def material_report_planer():
         bond =Coalesce( Sum('final_mass', filter=Q(location="Bond")),0),
         total =Coalesce( Sum('final_mass'),0),
         transferred =Coalesce(Sum('final_mass', filter=Q(location="Production",
-            production_transfer_date__date=datetime.datetime.now().date())),0),
+            production_transfer_date__date=timezone.now().date())),0),
         planned = ExpressionWrapper(Sum('final_mass')-Sum('final_mass'), output_field=IntegerField()),
         requested = ExpressionWrapper(Sum('final_mass')-Sum('final_mass'), output_field=IntegerField()),
         gauge = F('coil_gauge'),

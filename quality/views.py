@@ -8,7 +8,7 @@ from production.models import Order, Cut_Material, Piece
 from .models import Reconsiliation
 
 from frontend_choices import MONTH_LIST_CHOICES, YEAR_LIST_CHOICES
-
+from django.utils import timezone
 import calendar
 import datetime
 
@@ -27,8 +27,8 @@ class ReconsiliationListView(ListView):
 
     def get_context_data(self):
         context = super().get_context_data()
-        context["year"] = datetime.datetime.now().year
-        context["month"] = calendar.month_abbr[int(datetime.datetime.now().month)]
+        context["year"] = timezone.now().year
+        context["month"] = calendar.month_abbr[int(timezone.now().month)]
         context["years_list"] = YEAR_LIST_CHOICES
         context["months_list"] = MONTH_LIST_CHOICES
         return context
