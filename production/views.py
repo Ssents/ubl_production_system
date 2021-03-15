@@ -527,6 +527,7 @@ def create_pieces(request, coil_id, machine_id, order_id):
     create_order_tonage(order) 
 
     piece = {
+            'home_url':reverse_lazy('accounts:home'),
             'id':obj.id,
             'order':order_number,
             'coil': coil_number,
@@ -595,6 +596,7 @@ def update_piece(request):
                            material_finish= coil.coil_finish)
 
     piece = {
+        'home_url':reverse_lazy('accounts:home'),
         'piece_id':piece.id,
         'order': order.order_number,
         'coil':  coil.coil_number,
@@ -655,6 +657,7 @@ def material_page(request):
     machine_id = machine.id
     material = Cut_Material.objects.filter(order=order).values()
     context = {
+                'home_url':reverse_lazy('accounts:home'),
                 'material':material,
                 'order_id': order_id,
                 'machine_id':machine_id
@@ -1045,10 +1048,11 @@ def manpower_create(request):
     if request.method =="POST":
         machine_id = int(request.POST['machine_id'])
         machine = Machine.objects.get(pk=machine_id)
-        day = request.POST['day']
-        month = request.POST['month']
-        year = datetime.datetime.now().year
-        date = datetime.datetime(year, int(month), int(day)).date()
+        # day = request.POST['day']
+        # month = request.POST['month']
+        # year = datetime.datetime.now().year
+        date = request.POST['shift_date']
+        # date = datetime.datetime(year, int(month), int(day)).date()
         shift = request.POST['shift']
         operator = request.POST['operator']
         helpers = int(request.POST['helpers'])

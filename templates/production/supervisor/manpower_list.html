@@ -131,32 +131,10 @@
                                 {% endfor %}
                             </select>
                         </div>
-                        <div class="row col-md-12 py-1">
-                            <div class="col-6">
-                                <label for="inputDay" class="form-label">Day</label>
-                                <select id="inputDay" class="form-select" 
-                                    name="day" required>
-                                    <option selected value="">Choose...</option>
-                                    {% for day in days %}
-                                        <option value="{{day}}">{{day}}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div class="col-6">
-                                <label for="inputMonth" class="form-label">Month</label>
-                                <select id="inputMonth" class="form-select" 
-                                    name="month" required>
-                                    <option selected value="">Choose...</option>
-                                    {% for key, value in months %}
-                                        <option value="{{key}}">{{value}}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
                         <div class="col-md-12">
                             <label for="shiftDate" class="form-label">Shift date</label>
                             <input type="date" class="form-control" id="shiftDate"
-                                name="operator" required>
+                                name="shift_date" required>
                         </div>
                         <div class="col-md-12">
                             <label for="inputShift" class="form-label">Shift</label>
