@@ -1266,13 +1266,13 @@ def create_reconsiliation_1(material):
 
 
 
-
+from django.utils import timezone
 # CLASS BASED VIEWS
 class PerformanceListView(View):
     template_name = "production/supervisor/performance.html"
 
     def get(self, request):
-        performance_list = Performance.objects.filter(date=datetime.datetime.now().date)
+        performance_list = Performance.objects.filter(date=timezone.now())
         context = {
             "performance_list": performance_list,
             "date": datetime.datetime.now().date
@@ -1281,7 +1281,7 @@ class PerformanceListView(View):
     
     def post(self, request):
         if request.method == "POST":
-            search_date = request.POST["seach_date"]
+            search_date = request.POST["search_date"]
             context = {
                 "date": search_date,
                 "performance_list": Performance.objects.filter(date=search_date)

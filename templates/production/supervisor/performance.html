@@ -2,7 +2,66 @@
 {% load static %}
 
 
+{% block title %}
+    Performance Report
+{% endblock  %}
+    
+
 {% block content %}
     
+        <h4>Performance Report</h4>
+        <header  class=" row">
+            <div class="col-md-7">
+                <h5>{{date}}</h5>
+            </div>
+            <div class="col-md-5">
+                <form class="d-flex" method="POST" action="{% url 'production:performance_list' %}">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-8">
+                            <input type="date" class="form-control" value="{{date}}" name="search_date" />
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-primary searchBtn col-12" type="submit">
+                                Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </header>
+
+        <div class="wrapper ">
+            <div id="tableView" class="main-table  py-4">
+                <table class="table mobile-optimised shadow p-3 mb-5 bg-white rounded material-table">
+                    <thead>
+                    <tr >
+                        <th scope="col" class="major">Machine</th>
+                        <th scope="col" class="major">Operator</th>
+                        <th scope="col" class="minor">Shift</th>
+                        <th scope="col" class="minor">Target</th>
+                        <th scope="col" class="minor">Produced Tonage</th>
+                        <th scope="col" class="minor">Percentage</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for performance in performance_list %}
+                            <tr class="main-table-row complete row-body">
+                                <td class="major"  data-th="Machine: ">
+                                    <span class="title">{{performance.machine}}</span> 
+                                </td>
+                                <td class="major" data-th="Operator: ">
+                                    {{performance.operator}}
+                                </td>
+                                <td class="minor"  data-th="Shift:">{{performance.shift}} </td>
+                                <td class="minor"  data-th="Target: ">{{performance.total_capacity}} </td>
+                                <td class="minor" data-th="Produced Tonage:">{{performance.total_production}}</td>
+                                <td class="minor" data-th="Percentage:">{{performance.percentage}}</td>
+                            </tr>                      
+                        {% endfor %} 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
 {% endblock  %}
     
