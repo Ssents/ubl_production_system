@@ -2,10 +2,12 @@
 var order_id = document.getElementById("order-id").value;
 // var material_id = document.getElementById("coil-id").innerHTML;
 
+var home_url = $('.home-url').text();
+
 var general_url = "http://127.0.0.1:8000/machines/";
 var part_url = "create-material/";
 
-var create_url = general_url + part_url;
+var create_url = home_url + part_url;
 
 
 

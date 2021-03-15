@@ -249,7 +249,7 @@ def create_coil(request, machine_id, order_id):
                     coil_finish=coil_finish,final_mass=final_mass)
         material.save()
         context = {
-                    
+                    'home_url':reverse_lazy('maintenance:machines'),
                     "machine_id": machine_id,
                     "order_id": order_id,
                     "coil_id": material.id,
@@ -282,6 +282,7 @@ def edit_material_page(request, order_id):
 
     if material is not None:
         context = {
+                    'home_url':reverse_lazy('maintenance:machines'),
                     'order':order,
                     'machine_id': machine_id,
                     'order_id': order_id,
@@ -463,6 +464,7 @@ def pieces_template(request, machine_id, order_id, coil_id):
     machine_id_number = machine_id
     order_id_number = order_id
     context = {
+                'home_url':reverse_lazy('maintenance:machines'),
                 'coil_id':coil_id_number,
                 'order_id':order_id_number,
                 'machine_id':machine_id_number,

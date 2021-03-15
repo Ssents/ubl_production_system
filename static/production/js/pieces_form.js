@@ -3,9 +3,10 @@ var order_id = document.getElementById("order-id").innerHTML;
 var material_id = document.getElementById("coil-id").innerHTML;
 
 var general_url = "http://127.0.0.1:8000/machines/";
+var home_url = $('.home-url').text();
 var part_url = machine_id + "/order/" + order_id + "/coil/" + material_id + "/create-pieces";
 
-create_order_url = general_url + part_url;
+create_order_url = home_url + part_url;
 
 function getCookie(name) {
     let cookieValue = null;
@@ -60,10 +61,10 @@ function appendToPiecesTable(piece_data){
     // piece_data.machine_id;
     
     var table_item = `<tr id="${piece_data.id}">
-                            <td name="piece_length" class="piece-length">${piece_data.piece_length}</td>
-                            <td name="prime_pieces" class="prime-pieces">${piece_data.prime_pieces}</td>
-                            <td name="reject_pieces" class="reject-pieces">${piece_data.reject_pieces}</td>
-                            <td>
+                            <td name="piece_length" class="piece-length minor">${piece_data.piece_length}</td>
+                            <td name="prime_pieces" class="prime-pieces minor">${piece_data.prime_pieces}</td>
+                            <td name="reject_pieces" class="reject-pieces minor">${piece_data.reject_pieces}</td>
+                            <td class="minor">
                                 <div class="row">
                                     <button type="button" class="btn btn-primary col-md-6 updatePieces"
                                         data-bs-toggle="modal" data-bs-target="#editPiecesForm">Edit</button>
