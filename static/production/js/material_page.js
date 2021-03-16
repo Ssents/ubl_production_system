@@ -8,7 +8,7 @@ var general_url = "http://127.0.0.1:8000/machines/";
 var part_url = "create-material/";
 
 var create_url = home_url + part_url;
-
+console.log(home_url);
 
 
 function getCookie(name) {
@@ -27,26 +27,49 @@ function getCookie(name) {
     return cookieValue;
 }
 
+var coil_id = "";
+var coil_number = "";
+var initial_mass = "";
+$(".avaiableMaterial tbody").on("click", ".createMaterial", function(){
+    coil_id = $(this).closest('tr').attr('id');
+    console.log('coil id: ',coil_id);
+    coil_number = $(this).closest('tr').find('.coilNumber').text();
+    initial_mass = $(this).closest('tr').find('.initialMass').text();
+    console.log('coil number: ', coil_number, 'initial mass: ', initial_mass);
+
+    $("#createMaterialForm #inputCoilNumber").html(coil_number);
+    $('#createMaterialForm #inputInitialMass').html(initial_mass);
+
+});
+
+$('#createMaterialForm').on("click", "#confirmAddMaterial", function(){
+    const csrftoken = getCookie('csrftoken');
+    var final_mass = $('#createMaterialForm #inputFinalMass').val();
+    if (coil_id && coil_number && initial_mass && final_mass){
+        
+        $.ajax({
+            url: create_url,
+            headers: { "X-CSRFToken": csrftoken },
+            data: {
+                'order_id': order_id,
+                'coil_number': coil_number,
+                'initial_mass': initial_mass,
+                'final_mass': final_mass
+            },
+            dataType: 'json',
+            success: function (data) {
+                appendToMaterialTable(data.material_data);
+                
+            }
+        });
+        }
+    });
+
 $("form#material-form").submit(function() {
     var coil_number = document.getElementById("coil-number").value;
     var initial_mass = document.getElementById("initial-mass").value;
     var final_mass =document.getElementById("final-mass").value;
 
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
     const csrftoken = getCookie('csrftoken');
 
     if(coil_number && initial_mass && final_mass){

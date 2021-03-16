@@ -8,7 +8,7 @@ from frontend_choices import ORDER_GAUGE_CHOICES
 from django.utils.text import  slugify
 from maintenance.models import Machine
 from django.contrib.auth.models import User
-
+from django.utils import timezone
 
 # Create your models here.
 class Order(models.Model):

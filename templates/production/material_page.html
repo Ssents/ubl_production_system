@@ -31,7 +31,7 @@
 
   <div class="shadow p-3 mb-5 bg-white rounded">
     <header><h4>Available Material</h4></header>
-    <table class="table fade show">
+    <table class="table fade show avaiableMaterial">
       <thead class="titles">
         <tr>
           <th scope="col">Coil Number</th>
@@ -39,83 +39,25 @@
           <th scope="col">Options</th>
         </tr>
       </thead>
- 
-        
-      <tbody>
-              
+
+      <tbody>   
       {% for material in material_list %}
         <tr id="{{material.id}}">
-          <td > 
-            {{material.coil_number}}
-          </td>
-          <td >{{material.final_mass}}</td>
+          <td class="coilNumber">{{material.coil_number}}</td>
+          <td class="initialMass">{{material.final_mass}}</td>
           <td class="options row">
             <div class="col-md-6 py-1 add-new">
-                <button type="button" class="btn col-md-12 " >
-                  Utilise
-                </button>
+              <button type="button" class="btn btn-danger createMaterial col-12" 
+                data-bs-toggle="modal" data-bs-target="#createMaterialForm">
+                Use coil
+              </button>
             </div>
           </td>		      
         </tr>        
       {% endfor %}
-
       </tbody>
     </table>
   </div>
-
-
-    <form action="" id="material-form" class="row g-3 shadow p-3 mb-5 bg-white rounded order-form">
-      <div class="py-3">
-        <h3>Create Material</h3>
-      </div>
-      <!-- "{% url 'production:create-material-ajax' %}" -->
-      {% csrf_token %}
-      <input type="hidden" class="form-control" id="order-id" name="order_id" value="{{order_id}}">
-
-      <div class="form-group row">
-        <label for="inputEmail3" class="col-sm-2 col-form-label">Coil Number</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" id="coil-number" name="coil_number">
-        </div>
-      </div>
-      
-      <div class="form-group row">
-        <label for="inputPassword3" class="col-sm-2 col-form-label">Initial Mass</label>
-        <div class="col-sm-10">
-          <input type="number" class="form-control" id="initial-mass" 
-            name="initial_mass">
-        </div>
-      </div>
-      
-      <div class="form-group row">
-        <label for="inputPassword3" class="col-sm-2 col-form-label">Final Mass</label>
-        <div class="col-sm-10">
-          <input type="number" class="form-control" id="final-mass" name="final_mass">
-        </div>
-      </div>
-
-
-      <div class="form-row col-md-12 p-2">
-        <div class="col-md-6 py-1 add-new">
-          <a href ="{% url 'production:edit-order-page' order_id %}">
-            <button type="button" class="btn col-md-12 " 
-              data-toggle="button" aria-pressed="false" 
-              id="submit-order">
-              Back to order
-            </button>
-          </a>
-        </div>
-
-        <div class="col-md-6 py-1 add-new">
-          <button type="submit" class="btn col-md-12" 
-            data-toggle="button" aria-pressed="false" 
-            id="submit-order">
-            Save and Continue
-          </button>
-        </div>
-      </div>
-
-    </form>
 
 
     <table class="table fade show" id="material-table">
@@ -157,6 +99,50 @@
     </table>
 
 
+    <!-- Modal Create Material Alert-->
+    <div class="modal fade" id="createMaterialForm" data-bs-backdrop="static" 
+        data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" 
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content modal-edit-pieces">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">
+                        Create Material
+                    </h5>
+                    <button type="button" class="btn-close" 
+                        data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="editMaterialFormContent row g-3">
+                      <div class="col-md-12 row py-1">
+                          <div class="col-4">Coil Number:</div>
+                          <div id="inputCoilNumber" class="col-8"></div>
+                      </div class="col-md-12 row py-1">
+                        <div class="col-4">Initial Mass:</div>      
+                        <div id="inputInitialMass"  class="col-8"></div>
+                      </div>
+        
+                      <div class="col-md-12">
+                        <label for="inputFinalMass" class="form-label">Final Mass</label>
+                        <input type="number" class="form-control" id="inputFinalMass"
+                        required>
+                      </div>
+        
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary bg-danger" 
+                          data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary"
+                          id="confirmAddMaterial">Save</button>
+                      </div>
+                    </form>
+              </div>
+            </div>
+        </div>
+    </div>
+
+
+    
     <!-- Modal Edit Alert-->
     <div class="modal fade" id="editMaterialForm" data-bs-backdrop="static" 
         data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" 

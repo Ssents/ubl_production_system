@@ -126,6 +126,7 @@ def create_order(request, machine_id):
                                             location="Production")
 
         context = {
+                    "home_url": reverse_lazy('maintenance:machines'),
                     "order_id": order.id,
                     "order_number": order.order_number,
                     "order_gauge": order.order_gauge,
