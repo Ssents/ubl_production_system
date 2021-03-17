@@ -1,5 +1,5 @@
 
-var order_id = document.getElementById("order-id").value;
+var order_id = $('#order-id').text();
 // var material_id = document.getElementById("coil-id").innerHTML;
 
 var home_url = $('.home-url').text();
