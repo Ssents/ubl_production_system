@@ -24,21 +24,25 @@
 
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'maintenance:machines' %}">HOME</a>
-                        
-                    </li>
-
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             PRODUCTION
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#">OPERATOR</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{%  url 'production:supervisor_board' %}">SUPERVISOR</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            <!-- <li><a class="dropdown-item" href="#">Operator</a></li> -->
+                            <!-- <li><hr class="dropdown-divider"></li> -->
+                            <li><a class="dropdown-item" 
+                                    href="{% url 'maintenance:machines' %}">
+                                        Machines
+                                </a>
+                            </li>
+                            <!-- <li><hr class="dropdown-divider"></li> -->
+                            <li><a class="dropdown-item" 
+                                    href="{%  url 'production:supervisor_board' %}">
+                                        Supervisor
+                                </a>
+                            </li>
+                            <!-- <li><hr class="dropdown-divider"></li> -->
                         </ul>
                     </li>
 
@@ -52,7 +56,6 @@
                                 Dashboard
                                 </a>
                             </li>
-                            <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" 
                                     href="{%  url 'quality:reconsiliation' %}">
                                 Reconsiliation
@@ -61,17 +64,24 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">MAINTENANCE</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'supply_chain:main_dashboard' %}">SUPPLY CHAIN</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            SUPPLY CHAIN
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" 
+                                    href="{%  url 'supply_chain:main_dashboard' %}">
+                                Dashboard
+                                </a>
+                            </li>
+                            <li><a class="dropdown-item" 
+                                    href="{%  url 'supply_chain:dashboard' %}">
+                                Transfer Coils
+                                </a>
+                            </li>
+                        </ul>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" 
-                            aria-disabled="true">Disabled</a>
-                    </li>
                 </ul>
 
                 <div class="d-flex">
