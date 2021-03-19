@@ -119,7 +119,7 @@ function appendToMaterialTable(material_data){
                                     <a href=${pieces_url}>Pieces</a>
                                 </button>
                                 <button type="button" class="btn btn-danger col-md-6 deleteMaterial" 
-                                data-bs-toggle="modal" data-bs-target="#deleteMaterialForm">
+                                    data-bs-toggle="modal" data-bs-target="#deleteMaterialForm">
                                     Delete
                                 </button>
                             </td>		      
@@ -162,7 +162,7 @@ $("#deleteMaterialForm").on("click","#deleteMaterialConfirm", function(){
 
 function deleteMaterialAjax(id) {
     var partial_delete_url = 'delete-material/';
-    var delete_url = general_url + partial_delete_url;
+    var delete_url = home_url + partial_delete_url;
 
       $.ajax({
           url: delete_url,
@@ -173,10 +173,11 @@ function deleteMaterialAjax(id) {
           success: function (data) {
               if (data.deleted) {
                 console.log("Ajax loads the remove function");
-                $("tbody #" + id).remove();
-                
+                $("#material-table tbody #" + id).remove();
                 console.log("Ajax removes the data, ", "tbody #", id);
-
+              }
+              else{
+                console.log("naaaaaa");
               }
           }
       });

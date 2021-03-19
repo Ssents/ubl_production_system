@@ -34,6 +34,7 @@ from itertools import chain
 import datetime
 import pandas as pd
 import calendar
+from .custom_functions import create_reconsiliation_2
 
 
 
@@ -433,11 +434,13 @@ def delete_material_ajax(request):
 
         update_coil_mass(material)
         create_order_tonage(order)
-        create_reconsiliation(material_number = material.coil_number, 
-                    material_gauge = material.coil_gauge, 
-                    material_width = material.coil_width,
-                    material_colour = material.coil_colour, 
-                    material_finish = material.coil_finish)  
+        print("ORDER TONAGE KAWA")
+        create_reconsiliation_2(material_number = coil_number, 
+                    material_gauge = coil_gauge, 
+                    material_width = coil_width,
+                    material_colour = coil_colour, 
+                    material_finish = coil_finish)  
+        print("RECONSILIATION KAWA")
         
         data['deleted'] = True
         data['message'] = str(material.coil_number) + ' successfully deleted'
@@ -1333,51 +1336,54 @@ def update_coil_mass(coil):
         
 def create_reconsiliation(material_number, material_gauge, material_width,
                             material_colour, material_finish):
-    # create reconsiliation if new and save it in an instance:
-    # 1. get all the coil details from supply chain "Coil" models
+    print("RECONSILIATION STARTED")
     supply_chain_coil = Coil.objects.get(coil_number = material_number,
                                         coil_gauge = material_gauge,
                                         coil_width = material_width,
                                         coil_colour= material_colour,
                                         coil_finish= material_finish)
+    print("COIL GOT FROM SUPPLY CHAIN")
     material_list = Cut_Material.objects.filter(coil_number = material_number,
                                                     coil_gauge = material_gauge,
                                                     coil_width = material_width,
                                                     coil_colour= material_colour,
                                                     coil_finish= material_finish)
-    start_date = material_list.order_by('order__shift_date')[0].order.shift_date
-    end_date = material_list.order_by('-order__shift_date')[0].order.shift_date
-    
+    print("MATERIAL LIST GOT")
+    start_date = timezone.now().date
+    end_date = timezone.now().date
+    print("DEFAULT TIME GOT")
     
     try:
+        print("TRIED THE OBJECTS GET METHOD")
         coil_reconsiliation = Reconsiliation.objects.get(coil_number = material_number,
                                                         coil_gauge = material_gauge,
                                                         coil_width = material_width,
                                                         coil_colour= material_colour,
                                                         coil_finish= material_finish
                                                         )
-        #initial_mass will be got from the cupply chain coil along with the initial_running meters
-        # and the final mass
+        print("GOT SOMETHING")
         initial_mass = supply_chain_coil.initial_mass
         final_mass = supply_chain_coil.final_mass
         initial_running_meters = supply_chain_coil.initial_running_meters
-        # Next, we start the calculations
-        # a. List all the cut material that used the coil
-        
-        # b. If material was used, we can get pieces
         produced_mass=0
         produced_running_meters=0
         mass_gain=0
         running_meters_gain=0
+        print("INITIATED ALL OF THE VALUES")
 
         if material_list:
+            print("TRYING TO GET LIST OF PIECES")
             pieces = Piece.objects.filter(coil__in = material_list)
+            print("GOT LIST OF PIECES")
+            start_date = material_list.order_by('order__shift_date')[0].order.shift_date
+            end_date = material_list.order_by('-order__shift_date')[0].order.shift_date
             if pieces:
                 produced_mass = pieces.aggregate(total_tonage = Sum('total_tonage'))['total_tonage']*1000
                 produced_running_meters = pieces.aggregate(total_running_meters = Sum('total_running_meters'))['total_running_meters']              
                 mass_gain = int(produced_mass) - initial_mass
                 running_meters_gain = produced_running_meters - initial_running_meters
             else:
+                print("NO LIST OF PIECES")
                 produced_mass=0
                 produced_running_meters=0
                 mass_gain=0
@@ -1388,25 +1394,23 @@ def create_reconsiliation(material_number, material_gauge, material_width,
             mass_gain=0
             running_meters_gain=0
 
-        # coil_reconsiliation.initial_running_meters = initial_running_meters
-        # coil_reconsiliation.initial_mass = initial_mass
         coil_reconsiliation.produced_mass = produced_mass
         coil_reconsiliation.produced_running_meters = produced_running_meters
         coil_reconsiliation.mass_gain = mass_gain
         coil_reconsiliation.running_meters_gain = running_meters_gain
+        coil_reconsiliation.start_date = start_date
         coil_reconsiliation.finish_date = end_date
         coil_reconsiliation.save()
         
     except Reconsiliation.DoesNotExist:
-        # produced_mass = supply_chain_coil.initial_mass - supply_chain_coil.final_mass
-        coil_reconsiliation = Reconsiliation.objects.create(coil_number = material_number,
+
+        Reconsiliation.objects.create(coil_number = material_number,
             coil_gauge = material_gauge, coil_width = material_width,
-            coil_colour= material_colour, coil_finish= material_finish,
-            initial_mass = supply_chain_coil.initial_mass, final_mass=supply_chain_coil.final_mass,
-            produced_mass=0, initial_running_meters=supply_chain_coil.initial_running_meters,
-            produced_running_meters=0, mass_gain=0, running_meters_gain=0,
-            start_date=start_date, finish_date=end_date)
-    ## look for tonages in pieces and if they are not there, return zero
+            coil_colour = material_colour, coil_finish = material_finish,
+            initial_mass = supply_chain_coil.initial_mass, final_mass = supply_chain_coil.final_mass,
+            produced_mass = 0, initial_running_meters = supply_chain_coil.initial_running_meters,
+            produced_running_meters = 0, mass_gain = 0, running_meters_gain = 0,
+            start_date = timezone.now().date(), finish_date = timezone.now().date())
     return None
 
 @login_required

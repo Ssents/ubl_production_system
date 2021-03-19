@@ -38,11 +38,11 @@ class CoilDescriptionAdmin(admin.ModelAdmin):
 admin.site.register(Coil_description, CoilDescriptionAdmin)
 
 class ReconsiliationAdmin(admin.ModelAdmin):
-    list_display = ("coil_number", "coil_gauge", "coil_width", "coil_colour", 
+    list_display = ("id","coil_number", "coil_gauge", "coil_width", "coil_colour", 
                     "coil_finish", "initial_running_meters","produced_running_meters", 
                     "running_meters_gain", "initial_mass", "produced_mass",
                     "mass_gain")
-    list_display_links = ("coil_number", "coil_gauge")
+    list_display_links = ("id","coil_number", "coil_gauge")
     list_filter = ("coil_number", "coil_gauge", "coil_width", "coil_colour", 
                     "coil_finish")
     search_fields = ("coil_number", "coil_gauge", "coil_width", "coil_colour", 
