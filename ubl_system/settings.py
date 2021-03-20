@@ -28,9 +28,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'cod46=djp3q)n@udym(4^j2rv9nd5ac+*kwqp^^nw+(k&!_%=n'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
+# ALLOWED_HOSTS =  ['localhost', '127.0.0.1:8000']
 
 
 # Application definition
@@ -178,6 +179,9 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 django_heroku.settings(locals())
 
+
+SECURE_HSTS_SECONDS = 31536000
+SECURE_CONTENT_TYPE_NOSNIFF = True
 
 '''
 <?xml version="1.0" encoding="UTF-8"?>
