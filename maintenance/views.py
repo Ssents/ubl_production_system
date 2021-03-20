@@ -17,7 +17,7 @@ import datetime
 
 # Create your views here.
 @login_required
-@allowed_users(allowed_roles=['Admin', 'Operator', 'Production Supervisor'])
+@allowed_users(allowed_roles=['Admin', 'Operator', 'Production Supervisor', 'Supervisor'])
 def machines(request):
     machines_list = Machine.objects.all()
 
@@ -32,7 +32,7 @@ def machines(request):
     return render(request, "maintenance/machines.html", context)
 
 @login_required
-@allowed_users(allowed_roles=['Admin', 'Operator', 'Production Supervisor'])
+@allowed_users(allowed_roles=['Admin', 'Operator', 'Production Supervisor', 'Supervisor'])
 def machine(request, machine_id):
 
     date_today = datetime.datetime.now()
