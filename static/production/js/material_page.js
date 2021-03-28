@@ -103,7 +103,7 @@ function appendToMaterialTable(material_data){
     var machine_id = material_data.machine_id;
     var part_url = machine_id + '/order/' + order_id + '/coil/' + coil_id + '/pieces/';
 
-    var pieces_url = general_url + part_url;
+    var pieces_url = home_url + part_url;
     // console.log(pieces_url);
     var table_item = `<tr id="${coil_id}">
                             <td name="coil_number" data-bs-toggle="modal" 

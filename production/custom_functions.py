@@ -2,6 +2,10 @@ from quality.models import Reconsiliation
 from supply_chain.models import Coil
 from .models import Cut_Material, Piece
 from django.utils import timezone
+from django.db.models import (Count, F, Q, Value, Sum, FloatField, Min, Max, 
+                                Avg, IntegerField, ExpressionWrapper, DateField)
+from django.db.models.functions import Coalesce
+
 
 def create_reconsiliation_2(material_number, material_gauge, material_width,
                             material_colour, material_finish):
