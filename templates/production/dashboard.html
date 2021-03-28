@@ -60,18 +60,18 @@
   </div>
   
   <div class="form py-5 shadow p-3 mb-5 bg-white rounded search-form">
-      <form class="row g-3" action="{% url 'production:dashboard_search' %}" method="POST">
+      <form class="row g-3" action="{% url 'production:dashboard_search' %}" method="GET">
         <div class="col-12">
           <h3>Order Search</h3>
         </div>
         {% csrf_token %}
           <div class="col-md-3">
             <label for="inputOrderNumber" class="form-label">Order number</label>
-            <input type="email" class="form-control" name="order_number" 
+            <input type="text" class="form-control" name="order_number" 
               id="inputOrderNumber">
           </div>
 
-          <div class="col-md-3">
+          <div class="col-md-2">
             <label for="inputColour" class="form-label">Colour</label>
             <select name="order_colour" class="form-control" id="inputColour">
               <option selected="true" disabled="disabled">Colour (All)</option>
@@ -92,23 +92,19 @@
           </div>
 
           <div class="col-md-2">
-            <label for="inputGauge" class="form-label">Gauge</label>
-            <select name="order_gauge" class="form-control" id="inputGauge">
-              <option selected="true" disabled="disabled">Gauge (All)</option>
-              {% for key, value in gauge %}
-                <option value= "{{ key }}">{{value}}</option>
+            <label for="inputGauge" class="form-label">Machine</label>
+            <select name="machine" class="form-control" id="inputGauge">
+              <option selected="true" disabled="disabled">Machines (All)</option>
+              {% for machine in machine_list %}
+                <option value= "{{ machine.id }}">{{machine}}</option>
               {% endfor %}
             </select>
           </div>
 
-          <div class="col-md-2">
-            <label for="inputWidth" class="form-label">Width</label>
-            <select name="order_width" class="form-control" id="inputWidth">
-              <option selected="true" disabled="disabled">Gauge (All)</option>
-              {% for key, value in width %}
-                <option value= "{{ key }}">{{value}}</option>
-              {% endfor %}
-            </select>
+          <div class="col-md-3">
+            <label for="inputDate" class="form-label">Date</label>
+            <input type="date" class="form-control" name="production_date" 
+            id="inputDate">
           </div>
           <div class="col-lg-12 mt-5">
             <button type="submit" class="btn btn-primary col-lg-12 submit-button">Search</button>

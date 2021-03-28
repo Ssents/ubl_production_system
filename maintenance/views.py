@@ -72,6 +72,7 @@ def machine(request, machine_id):
 
 
     context = {
+        'machine_list': Machine.objects.all(),
         'machinery':machinery,
         'bond': PRODUCTION_BOND_CHOICES,
         'colour': ORDER_COLOUR_CHOICES,

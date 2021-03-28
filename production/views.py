@@ -59,17 +59,18 @@ def create_order_page(request, machine_id):
 @login_required
 @allowed_users(allowed_roles=['Operator', 'Admin', 'Supervisor'])
 def machine_dashboard(request):
-
     return render(request, 'production/dashboard.html')
+
+
     
 @login_required
 @allowed_users(allowed_roles=['Operator', 'Admin', 'Supervisor'])
 def dashboard_search(request):
-    if request.method == "POST":
-        order_number = request.POST['order_number']
-        colour = request.POST['order_colour']
+    # if request.method == "POST":
+        # order_number = request.POST['order_number']
+        # colour = request.POST['order_colour']
     
-    return render(request, 'production/dashboard.html')
+    return render(request, 'production/order_search.html')
 
 
 @login_required
@@ -315,7 +316,7 @@ def edit_material(request):
         material.initial_mass = initial_mass
         material.final_mass = final_mass
         material.save()
-        create_reconsiliation(material_number = material.coil_number, 
+        create_reconsiliation_2(material_number = material.coil_number, 
                             material_gauge = material.coil_gauge, 
                             material_width = material.coil_width,
                             material_colour = material.coil_colour, 
@@ -398,7 +399,7 @@ def edit_material_ajax(request):
 
     supply_chain_coil.final_mass = final_mass
     supply_chain_coil.save()
-    create_reconsiliation(material_number = material.coil_number, 
+    create_reconsiliation_2(material_number = material.coil_number, 
                         material_gauge = material.coil_gauge, 
                         material_width = material.coil_width,
                         material_colour = material.coil_colour, 
@@ -524,7 +525,7 @@ def create_pieces(request, coil_id, machine_id, order_id):
                                 status="Not Transferred",
                                 transferred_pieces=0)
 
-    create_reconsiliation(material_number = coil.coil_number, 
+    create_reconsiliation_2(material_number = coil.coil_number, 
                             material_gauge = coil.coil_gauge, 
                             material_width = coil.coil_width,
                             material_colour = coil.coil_colour, 
@@ -595,7 +596,7 @@ def update_piece(request):
     
     piece.save()
     create_order_tonage(order)
-    create_reconsiliation(material_number=coil.coil_number, 
+    create_reconsiliation_2(material_number=coil.coil_number, 
                            material_gauge= coil.coil_gauge, 
                            material_width = coil.coil_width,
                            material_colour= coil.coil_colour, 
@@ -642,7 +643,7 @@ def  delete_piece(request):
     order =piece.order
     piece.delete()
     
-    create_reconsiliation(material_number = material.coil_number, 
+    create_reconsiliation_2(material_number = material.coil_number, 
                     material_gauge = material.coil_gauge, 
                     material_width = material.coil_width,
                     material_colour = material.coil_colour, 
@@ -822,7 +823,8 @@ def transfer_order(request, order_id):
         piece.status = "Transferred"
         piece.save()
     return redirect("production:list_products")
-    
+
+
 
 @login_required
 @allowed_users(allowed_roles=['Admin', 'Supervisor'])

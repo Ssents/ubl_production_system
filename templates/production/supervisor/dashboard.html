@@ -40,11 +40,11 @@
                                         <thead>
                                         <tr >
                                             <!-- <th scope="col" class="major">Details</th> -->
-                                            <th scope="col" class="minor">Details</th>
-                                            <th scope="col" class="minor">Bond</th>
-                                            <th scope="col" class="minor">Transferred today</th>
-                                            <th scope="col" class="minor">Production</th>
-                                            <th scope="col" class="minor">Total</th>
+                                            <th scope="col" class="major">Details</th>
+                                            <th scope="col" class="major">Bond</th>
+                                            <th scope="col" class="major">Transferred today</th>
+                                            <th scope="col" class="major">Production</th>
+                                            <th scope="col" class="major">Total</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -58,18 +58,18 @@
                                                         <span class='coilWidth'>{{material.coil_width}}</span>
                                                     </td>
                         
-                                                    <td class="major" data-th="Details:">
+                                                    <td class="minor" data-th="Bond:">
                                                         {{material.bond}}
                                                     </td>
                         
-                                                    <td class="major" data-th="Details:">
+                                                    <td class="minor" data-th="Transferred today:">
                                                         {{material.transferred}}
                                                     </td>
                         
-                                                    <td class="major" data-th="Details:">
+                                                    <td class="minor" data-th="Production:">
                                                         {{material.production}}
                                                     </td>
-                                                    <td class="major" data-th="Details:">
+                                                    <td class="minor" data-th="Total:">
                                                         {{material.total}}
                                                     </td>
                                                 </tr>                      
@@ -84,20 +84,20 @@
                                         <table class="table">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col">Order number</th>
-                                                    <th scope="col">Profile</th>
-                                                    <th scope="col">Details</th>
-                                                    <th scope="col">Status</th>
+                                                    <th scope="col" class="major">Order number</th>
+                                                    <th scope="col" class="major">Profile</th>
+                                                    <th scope="col" class="major">Details</th>
+                                                    <th scope="col" class="major">Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {% for order in orders_report %}
                                                     <tr>
-                                                        <th scope="row">{{order.order_number}}</th>
-                                                        <td>{{order.profile}}</td>
-                                                        <td>G{{order.order_gauge}} {{order.order_colour}} 
+                                                        <th scope="row" class="major" data-th="order number:">{{order.order_number}}</th>
+                                                        <td class="minor" data-th="Profile:">{{order.profile}}</td>
+                                                        <td class="minor" data-th="Details:">G{{order.order_gauge}} {{order.order_colour}} 
                                                             {{order.order_finish}} {{order.order_width}}</td>
-                                                        <td>
+                                                        <td class="minor" data-th="Status:">
                                                             {% if order.order_completed == "False" %}
                                                                 Incomplete
                                                             {% else %}
