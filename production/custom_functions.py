@@ -74,12 +74,12 @@ def create_reconsiliation_2(material_number, material_gauge, material_width,
             coil_finish = material_finish,
             initial_mass = initial_mass, 
             final_mass = final_mass,
-            produced_mass = 0, 
+            produced_mass = produced_mass, 
             initial_running_meters = initial_running_meters,
-            produced_running_meters = 0, 
-            mass_gain = 0, 
-            running_meters_gain = 0,
+            produced_running_meters = produced_running_meters, 
+            mass_gain = mass_gain, 
+            running_meters_gain = running_meters_gain,
             start_date = timezone.now().date(), 
             finish_date = timezone.now().date()
         )
-    return "SUCCESS"
+    return "RECONSILIATION COMPLETE"
