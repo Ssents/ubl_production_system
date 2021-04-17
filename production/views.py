@@ -67,10 +67,38 @@ def machine_dashboard(request):
 @allowed_users(allowed_roles=['Operator', 'Admin', 'Supervisor'])
 def dashboard_search(request):
     # if request.method == "POST":
-        # order_number = request.POST['order_number']
-        # colour = request.POST['order_colour']
-    
-    return render(request, 'production/order_search.html')
+    order_number = request.GET['order_number']
+    colour = request.GET.get('order_colour',None )
+    finish = request.GET.get('order_finish', None)
+    machine_id = request.GET.get('machine_id', None)
+    date = request.GET.get('production_date', None)
+    machine = None
+    if machine_id:
+        machine = Machine.objects.get(pk=machine_id)
+
+    orders = Order.objects.all()
+    if order_number:
+        orders = orders.filter(order_number=order_number)
+    if colour:
+        orders = orders.filter(order_colour=colour)
+    if finish:
+        orders = orders.filter(order_finish=finish)
+    if machine_id:
+        orders = orders.filter(machine=machine)
+    if date:
+        orders =orders.filter(shift_date=date)
+
+
+    material_list = Cut_Material.objects.filter(order__in=orders)
+    pieces_list = Piece.objects.filter(coil__in=material_list)
+    context = {
+        "order_number": order_number,
+        "colour": colour,
+        "orders_list": orders,
+        "material_list": material_list,
+        "pieces_list": material_list
+    }
+    return render(request, 'production/order_search.html', context)
 
 
 @login_required

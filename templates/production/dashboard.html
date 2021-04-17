@@ -73,7 +73,7 @@
 
           <div class="col-md-2">
             <label for="inputColour" class="form-label">Colour</label>
-            <select name="order_colour" class="form-control" id="inputColour">
+            <select name="order_colour_1" class="form-control" id="inputColour">
               <option selected="true" disabled="disabled">Colour (All)</option>
               {% for key, value in colour %}
                 <option value= "{{ key }}">{{value}}</option>
@@ -83,7 +83,7 @@
 
           <div class="col-md-2">
             <label for="inputFinish" class="form-label">Finish</label>
-            <select name="order_gauge" class="form-control">
+            <select name="order_finish" class="form-control">
               <option selected="true" disabled="disabled" if="inputFinish">Finish (All)</option>
               {% for key, value in finish %}
                 <option value= "{{ key }}">{{value}}</option>

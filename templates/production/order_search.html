@@ -10,5 +10,11 @@
 
 {% block content %}
     <h1>Search</h1>
+    <h6>Order number: {{order_number}}</h6>
+    
+    {% for order in orders_list %}
+        {{order}}
+    {% endfor %}
+        
 {% endblock  %}
     
