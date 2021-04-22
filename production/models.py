@@ -3,7 +3,8 @@ from django.db import models
 from django.db.models.signals import pre_save
 from frontend_choices import (PRODUCTION_TYPE_CHOICES, PROFILE_CHOICES, ORDER_COLOUR_CHOICES, 
                         ORDER_FINISH_CHOICES, PRODUCTION_BOND_CHOICES, ORDER_GAUGE_CHOICES,
-                        ORDER_WIDTH_CHOICES, PIECE_STATUS_CHOICES, PRODUCTION_SHIFT_CHOICES)
+                        ORDER_WIDTH_CHOICES, PIECE_STATUS_CHOICES, PRODUCTION_SHIFT_CHOICES,
+                        WEEK_DAY_CHOICES)
 from frontend_choices import ORDER_GAUGE_CHOICES
 from django.utils.text import  slugify
 from maintenance.models import Machine
@@ -185,3 +186,12 @@ class ProdutionTeam(models.Model):
     designation =models.CharField(max_length=50)
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
     
+class Shift(models.Model):
+    shift_name = models.CharField(max_length=20)
+    day = models.CharField(max_length=25, choices=WEEK_DAY_CHOICES, blank=True)
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+    duration =models.DecimalField(max_digits=4, decimal_places=2)
+
+    def __str__(self):
+        return (self.shift_name +  "-" + str(self.duration) + "hrs")

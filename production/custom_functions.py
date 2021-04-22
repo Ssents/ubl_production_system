@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.db.models import (Count, F, Q, Value, Sum, FloatField, Min, Max, 
                                 Avg, IntegerField, ExpressionWrapper, DateField)
 from django.db.models.functions import Coalesce
+from .models import Shift
 
 
 def create_reconsiliation_2(material_number, material_gauge, material_width,
@@ -83,3 +84,19 @@ def create_reconsiliation_2(material_number, material_gauge, material_width,
             finish_date = timezone.now().date()
         )
     return "RECONSILIATION COMPLETE"
+
+import datetime
+
+def set_shift():
+    date_today = datetime.datetime.now()
+    day_of_the_week = date_today.weekday()
+    time = date_today.time()
+    week_days_list = [0, 1 ,2, 3, 4, 7]
+    if day_of_the_week in week_days_list:
+        week_day = "Week day"
+    else:
+        week_day = "Weekend"
+    shift = Shift.objects.get(day=week_day, start_time__lte = date_today.time(),
+                                            end_time__gte = date_today.time())
+
+    return shift

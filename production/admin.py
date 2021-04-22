@@ -1,6 +1,6 @@
 from django.contrib import admin
 from production.models import (Order, Piece, Cut_Material, Section, Performance, 
-                                ManpowerPlan, ProductionPlan, MaterialRequest)
+                                ManpowerPlan, ProductionPlan, MaterialRequest, Shift)
 # Register your models here.
 
 
@@ -79,3 +79,13 @@ class MaterialRequestAdmin(admin.ModelAdmin):
     search_fields = ("colour", "finish", "gauge", "width",)
     list_per_page = 25
 admin.site.register(MaterialRequest, MaterialRequestAdmin)
+
+
+class ShiftAdmin(admin.ModelAdmin):
+    list_display = ("id", "shift_name", "start_time", "end_time", 
+                    "end_time", "duration")
+    list_display_links = ("id", "shift_name")
+    list_filter = ("duration", "start_time", "end_time",)
+    search_fields = ("duration", "shift_name")
+
+admin.site.register(Shift, ShiftAdmin)

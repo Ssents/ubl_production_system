@@ -97,6 +97,11 @@ PIECE_STATUS_CHOICES = [
                     ("Not Transferred", "Not Transferred"),
                 ]
 
+WEEK_DAY_CHOICES =[
+                    ("Week day", "Week day"),
+                    ("Weekend", "Weekend")
+]
+
 months = [month for month in range(1, 13)] 
 MONTH_LIST_CHOICES = [(month, calendar.month_abbr[month]) for month in months]
 DAYS_LIST_CHOICES = [day for day in range(1,32)]
