@@ -94,7 +94,7 @@ WSGI_APPLICATION = 'ubl_system.wsgi.application'
 DATABASES = {
    'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'UBL_system',
+        'NAME': 'ubl_v2',
         'USER': 'postgres',
         'PASSWORD':'1234',
         'HOST':'localhost',
